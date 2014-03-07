@@ -54,6 +54,8 @@ public class List extends Activity {
 		
 		initializeTextViews();
 		
+		new CallAPI().execute("Lehman");
+		
 		
 		/*
 		if (building != null) {
@@ -121,82 +123,6 @@ public class List extends Activity {
 		status2.setText("");
 		//initially set that the building has two sides (A and B)
 		hasNext = true;
-		if (building.equals("Lehman")) {
-			first = "1008732";
-			next = "1008733";
-		} else if (building.equals("Cleveland")) {
-			first = "7205";
-			next = "1008730";
-		} else if (building.equals("Hughes")) {
-			first = "1008728";
-			next = "1008729";
-		} else if (building.equals("Roosevelt")) {
-			first = "1008721";
-			next = "1008723";
-		} else if (building.equals("Smith")) {
-			first = "1008725";
-			next = "1008726";
-		} else if (building.equals("Cayuga")) {
-			first = "1008750";
-			hasNext = false;
-		} else if (building.equals("Mohawk")) {
-			first = "1008719";
-			hasNext = false;
-		} else if (building.equals("Oneida")) {
-			first = "1008711";
-			hasNext = false;
-		} else if (building.equals("Onondaga")) {
-			first = "1008717";
-			hasNext = false;
-		} else if (building.equals("Seneca")) {
-			first = "1008713";
-			hasNext = false;
-		} else if (building.equals("Champlaign")) {
-			first = "1039287";
-			hasNext = false;
-		} else if (building.equals("Digman")) {
-			first = "1039187";
-			hasNext = false;
-		} else if (building.equals("Rafuse")) {
-			first = "1039267";
-			hasNext = false;
-		} else if (building.equals("Whitney")) {
-			first = "1039234";
-			next = "1039196";
-		} else if (building.equals("Cascade")) {
-			first = "2043877";
-			hasNext = false;
-		} else if (building.equals("Marcy")) {
-			first = "2044114";
-			hasNext = false;
-		} else if (building.equals("Hunter")) {
-			first = "2043913";
-			hasNext = false;
-		} else if (building.equals("Bingham")) {
-			first = "1033795";
-			next = "1033937";
-		} else if (building.equals("Broome")) {
-			first = "1040623";
-			next = "1040603";
-		} else if (building.equals("Delaware")) {
-			first = "1040605";
-			next = "1040604";
-		} else if (building.equals("Endicott")) {
-			first = "1040646";
-			next = "1040624";
-		} else if (building.equals("Brandywine")) {
-			first = "1013011";
-			hasNext = false;
-		} else if (building.equals("Choconut")) {
-			first = "1013007";
-			hasNext = false;
-		} else if (building.equals("Glenwood")) {
-			first = "1013019";
-			hasNext = false;
-		} else if (building.equals("Nanticoke")) {
-			first = "1012990";
-			hasNext = false;
-		}
 		webView.loadUrl(url + first);
 		//switch for the webview to load a second time for the second building
 		switcher = true;
@@ -259,46 +185,6 @@ public class List extends Activity {
 		builder.setCancelable(false);
 		selected = -1;
 		buildings = null;
-		if (community.equals("Hinman")) {
-			buildings = new String[5];
-			buildings[0] = "Cleveland";
-			buildings[1] = "Hughes";
-			buildings[2] = "Lehman";
-			buildings[3] = "Roosevelt";
-			buildings[4] = "Smith";
-		} else if (community.equals("MountainView")) {
-			buildings = new String[4];
-			buildings[0] = "Cascade";
-			buildings[1] = "Marcy";
-			buildings[2] = "Hunter";
-			buildings[3] = "Windham";
-		} else if (community.equals("College in the Woods")) {
-			buildings = new String[5];
-			buildings[0] = "Cayuga";
-			buildings[1] = "Mohawk";
-			buildings[2] = "Oneida";
-			buildings[3] = "Onondaga";
-			buildings[4] = "Seneca";
-		} else if (community.equals("Dickinson")) {
-			buildings = new String[4];
-			buildings[0] = "Champlaign";
-			buildings[1] = "Digman";
-			buildings[2] = "Rafuse";
-			buildings[3] = "Whitney";
-		} else if (community.equals("Newing")) {
-			buildings = new String[4];
-			buildings[0] = "Bingham";
-			buildings[1] = "Broome";
-			buildings[2] = "Delaware";
-			buildings[3] = "Endicott";
-		} else if (community.equals("Susquehanna")) {
-			buildings = new String[4];
-			buildings[0] = "Brandywine";
-			buildings[1] = "Choconut";
-			buildings[2] = "Glenwood";
-			buildings[3] = "Nanticoke";
-		}
-
 		builder.setSingleChoiceItems(buildings, selected,
 				new DialogInterface.OnClickListener() {
 					@Override
