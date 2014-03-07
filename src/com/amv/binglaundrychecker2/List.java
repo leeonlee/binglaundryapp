@@ -1,38 +1,35 @@
 package com.amv.binglaundrychecker2;
 
-import java.util.Scanner;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
-import com.amv.binglaundrychecker2.R;
 
 public class List extends Activity {
 	private ProgressDialog progDialog;
 	private String title, washers, dryers, url;
 	private String[] buildings;
 	private String building, first, next;
-	private String[] communities = { "Hinman", "MountainView", "Dickinson",
-			"College in the Woods", "Susquehanna", "Newing" };
+	private String[] communities;
 	int selected;
 	boolean hasNext;
 	private WebView webView;
@@ -41,6 +38,7 @@ public class List extends Activity {
 	boolean switcher;
 	int numComplete;
 	private TableLayout table;
+	private String apiURL = "http://binglaundry.herokuapp.com/status/";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +51,17 @@ public class List extends Activity {
 		//url of esuds to scrape data from
 		url = "http://binghamton-asi.esuds.net/RoomStatus/showRoomStatus.i?locationId=";
 		table = (TableLayout) findViewById(R.id.tableLayout);
+		
 		initializeTextViews();
+		
+		
+		/*
 		if (building != null) {
 			getStatus(building);
 		} else {
 			//start the building setup
 			setCommunity();
-		}
+		}*/
 	}
 	//save the setup 
 	@Override
@@ -117,13 +119,6 @@ public class List extends Activity {
 		buildingNameB.setText("");
 		status1.setText("");
 		status2.setText("");
-		//use webview to get onto Esuds in the background
-		webView = new WebView(List.this);
-		//Esuds works with javascript functions, have to let them load before scraping
-		webView.getSettings().setJavaScriptEnabled(true);
-		webView.setWebViewClient(new MyClient());
-		//loads the javascript code into an interface called "HtmlViewer"
-		webView.addJavascriptInterface(new JIFace(List.this), "HtmlViewer");
 		//initially set that the building has two sides (A and B)
 		hasNext = true;
 		if (building.equals("Lehman")) {
@@ -331,120 +326,34 @@ public class List extends Activity {
 			}
 		});
 	}
+	
+	private class CallAPI extends AsyncTask<String, String, String>{
 
-	class MyClient extends WebViewClient {
 		@Override
-		public void onPageFinished(WebView view, String url) {
-			//when page is done loading, inject javascript to return the html
-			webView.loadUrl("javascript:window.HtmlViewer.showHTML(document.getElementsByTagName('html')[0].innerHTML);");
-			progDialog.dismiss();
-		}
-	}
+		protected String doInBackground(String... params) {
+			String urlString = apiURL + params[0];
+			
+			String resultToDisplay = "";
+			InputStream in = null;
+			
+			try {
+				URL url = new URL(urlString);
+				
+				HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+				
+				in = new BufferedInputStream(urlConnection.getInputStream());
+			} catch (Exception e){
+				System.out.println(e.getMessage());
+				
+				return e.getMessage();
+			}
 
-	class JIFace {
-		private Context ctx;
-		JIFace(Context ctx) {
-			this.ctx = ctx;
+			return resultToDisplay;
 		}
-		//add @JavascriptInterface to be compatible with Android 4.2
-		//once the html has been scraped, retrieve all relevant information
-		@JavascriptInterface
-		public void showHTML(String html) {
-			Scanner input = new Scanner(html);
-			//earliest washer/dryers available
-			int earliestWash = 0;
-			int earliestDry = 0;
-			//how many washers/dryers are available
-			int washAvail = 0;
-			int dryAvail = 0;
-			//how many are complete and waiting to be picked up
-			int washComplete = 0;
-			int dryComplete = 0;
-			//how many are currently in true
-			int washInUse = 0;
-			int dryInUse = 0;
-			//all the information that is seen is pertaining to washers until
-			//"footer" is seen in the html
-			boolean wash = true;
-			while (input.hasNextLine()) {
-				String string = input.nextLine();
-				//parse each individual line of html
-				if (string.indexOf("font class=\"title\">") != -1) {
-					title = string.substring(20, string.indexOf("<", 20));
-				}
-				if (string.indexOf("footer") != -1)
-					wash = false;
-				if (string.indexOf("Available") != -1)
-					if (wash)
-						washAvail++;
-					else
-						dryAvail++;
-				if (string.indexOf("Cycle Complete") != -1) {
-					if (wash)
-						washComplete++;
-					else
-						dryComplete++;
-				}
-				if (string.indexOf("In Use") != -1) {
-					if (wash) {
-						washInUse++;
-						input.nextLine();
-						String timeLeft = input.nextLine();
-						timeLeft = timeLeft.substring(4, timeLeft.indexOf("<", 4));
-						if (earliestWash == 0 || Integer.parseInt(timeLeft) < earliestWash)
-							earliestWash = Integer.parseInt(timeLeft);
-					} else {
-						dryInUse++;
-						input.nextLine();
-						String timeLeft = input.nextLine();
-						timeLeft = timeLeft.substring(4, timeLeft.indexOf("<", 4));
-						if (earliestDry == 0 || Integer.parseInt(timeLeft) < earliestDry)
-							earliestDry = Integer.parseInt(timeLeft);
-					}
-				}
-			}
-			int washTotal = washAvail + washInUse + washComplete;
-			int dryTotal = dryAvail + dryInUse + dryComplete;
-			washers = washAvail + "/" + washTotal + " washers available" + "\n" + washComplete
-					+ " washers completed" + "\n"
-							+ washInUse + " washers in use";
-			if (earliestWash != 0){
-				washers += "\n(Earliest: "+earliestWash +" mins)";
-			}
-			dryers = dryAvail + "/" + dryTotal + " dryers available" + "\n" + dryComplete
-					+ " dryers completed" + "\n"+ dryInUse + " dryers in use";
-			if (earliestDry != 0){
-				dryers += "\n(Earliest: "+earliestDry +" mins)";
-			}
-			//need to run on UI thread to be able to have textviews update on the spot
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					if (switcher) {
-						buildingName.setText(title);
-						statusA.setText(washers);
-						statusB.setText(dryers);
-						switcher = false;
-						if (hasNext)
-							webView.loadUrl(url + next);
-						Time now = new Time();
-						now.setToNow();
-						String hours = now.format("%H");
-						if (Integer.parseInt(hours) > 12) {
-							hours = Integer
-									.toString(Integer.parseInt(hours) - 12);
-						}
-						hours += now.format(":%M");
-						time.setText("Status as of " + hours
-								+ "\nHold the screen to refresh");
-					} else {
-						buildingNameB.setText(title);
-						status1.setText(washers);
-						status2.setText(dryers);
-					}
-				}
-			});
-
+		
+		protected void onPostExecute(String result){
+				
 		}
+		
 	}
 }
