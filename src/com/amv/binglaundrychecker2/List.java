@@ -1,8 +1,10 @@
 package com.amv.binglaundrychecker2;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.app.Activity;
@@ -14,6 +16,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,19 +54,7 @@ public class List extends Activity {
 		//url of esuds to scrape data from
 		url = "http://binghamton-asi.esuds.net/RoomStatus/showRoomStatus.i?locationId=";
 		table = (TableLayout) findViewById(R.id.tableLayout);
-		
 		initializeTextViews();
-		
-		new CallAPI().execute("Lehman");
-		
-		
-		/*
-		if (building != null) {
-			getStatus(building);
-		} else {
-			//start the building setup
-			setCommunity();
-		}*/
 	}
 	//save the setup 
 	@Override
@@ -107,7 +98,10 @@ public class List extends Activity {
 		table.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View arg0) {
-				getStatus(building);
+				progDialog = new ProgressDialog(List.this);
+				progDialog.setMessage("Loading..");
+				progDialog.show();
+				new CallAPI().execute("Lehman");
 				return true;
 			}
 		});
@@ -213,32 +207,51 @@ public class List extends Activity {
 		});
 	}
 	
+	private static String convertInputStream(InputStream in) throws IOException{
+		int bytesRead;
+		byte[] contents = new byte[1024];
+		String string = null;
+		while ((bytesRead = in.read(contents)) != -1){
+			string = new String(contents, 0, bytesRead);
+		}
+		return string;
+	}
+	
 	private class CallAPI extends AsyncTask<String, String, String>{
 
 		@Override
 		protected String doInBackground(String... params) {
-			String urlString = apiURL + params[0];
+			String urlString = apiURL + "Lehman";
 			
 			String resultToDisplay = "";
 			InputStream in = null;
+			URL url = null;
+			HttpURLConnection urlConnection = null;
 			
 			try {
-				URL url = new URL(urlString);
+				url = new URL(urlString);
 				
-				HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+				urlConnection = (HttpURLConnection) url.openConnection();
 				
 				in = new BufferedInputStream(urlConnection.getInputStream());
-			} catch (Exception e){
-				System.out.println(e.getMessage());
 				
-				return e.getMessage();
+				resultToDisplay = convertInputStream(in);
+
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				urlConnection.disconnect();
 			}
 
 			return resultToDisplay;
 		}
 		
 		protected void onPostExecute(String result){
-				
+				Log.i("", result);
+				progDialog.dismiss();
+				statusA.setText(result);
 		}
 		
 	}
