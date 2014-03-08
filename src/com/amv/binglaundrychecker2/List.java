@@ -6,6 +6,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -36,8 +41,8 @@ public class List extends Activity {
 	int selected;
 	boolean hasNext;
 	private WebView webView;
-	private TextView buildingName, statusA, statusB, buildingNameB, status1, status2,
-			time;
+	private TextView buildingName, statusA, statusB, buildingNameB, status1,
+			status2, time;
 	boolean switcher;
 	int numComplete;
 	private TableLayout table;
@@ -47,16 +52,17 @@ public class List extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.blding_list);
-		//load the setup
+		// load the setup
 		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-		//if building pref is not there then set building to null
+		// if building pref is not there then set building to null
 		building = prefs.getString("building", null);
-		//url of esuds to scrape data from
+		// url of esuds to scrape data from
 		url = "http://binghamton-asi.esuds.net/RoomStatus/showRoomStatus.i?locationId=";
 		table = (TableLayout) findViewById(R.id.tableLayout);
 		initializeTextViews();
 	}
-	//save the setup 
+
+	// save the setup
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -78,19 +84,19 @@ public class List extends Activity {
 				"fonts/Roboto-Medium.ttf");
 		buildingName = (TextView) findViewById(R.id.building);
 		buildingName.setTypeface(tf);
-		//statusA = A side of first building
+		// statusA = A side of first building
 		statusA = (TextView) findViewById(R.id.statusA);
 		statusA.setTypeface(tf2);
-		//statusB = B side of first building
+		// statusB = B side of first building
 		statusB = (TextView) findViewById(R.id.statusB);
 		statusB.setTypeface(tf2);
-		//building name of second building
+		// building name of second building
 		buildingNameB = (TextView) findViewById(R.id.buildingB);
 		buildingNameB.setTypeface(tf);
-		//status 1 = A side of second building
+		// status 1 = A side of second building
 		status1 = (TextView) findViewById(R.id.status1);
 		status1.setTypeface(tf2);
-		//status 2 = B side of second building
+		// status 2 = B side of second building
 		status2 = (TextView) findViewById(R.id.status2);
 		status2.setTypeface(tf2);
 		time = (TextView) findViewById(R.id.time);
@@ -108,17 +114,17 @@ public class List extends Activity {
 	}
 
 	private void getStatus(String building) {
-		//setting values to reset to while it loads
+		// setting values to reset to while it loads
 		buildingName.setText("");
 		statusA.setText("");
 		statusB.setText("");
 		buildingNameB.setText("");
 		status1.setText("");
 		status2.setText("");
-		//initially set that the building has two sides (A and B)
+		// initially set that the building has two sides (A and B)
 		hasNext = true;
 		webView.loadUrl(url + first);
-		//switch for the webview to load a second time for the second building
+		// switch for the webview to load a second time for the second building
 		switcher = true;
 		progDialog = ProgressDialog.show(List.this, "", "Working..", true);
 	}
@@ -206,35 +212,35 @@ public class List extends Activity {
 			}
 		});
 	}
-	
-	private static String convertInputStream(InputStream in) throws IOException{
+
+	private static String convertInputStream(InputStream in) throws IOException {
 		int bytesRead;
 		byte[] contents = new byte[1024];
 		String string = null;
-		while ((bytesRead = in.read(contents)) != -1){
+		while ((bytesRead = in.read(contents)) != -1) {
 			string = new String(contents, 0, bytesRead);
 		}
 		return string;
 	}
-	
-	private class CallAPI extends AsyncTask<String, String, String>{
+
+	private class CallAPI extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
 			String urlString = apiURL + "Lehman";
-			
+
 			String resultToDisplay = "";
 			InputStream in = null;
 			URL url = null;
 			HttpURLConnection urlConnection = null;
-			
+
 			try {
 				url = new URL(urlString);
-				
+
 				urlConnection = (HttpURLConnection) url.openConnection();
-				
+
 				in = new BufferedInputStream(urlConnection.getInputStream());
-				
+
 				resultToDisplay = convertInputStream(in);
 
 			} catch (MalformedURLException e) {
@@ -247,12 +253,21 @@ public class List extends Activity {
 
 			return resultToDisplay;
 		}
-		
-		protected void onPostExecute(String result){
-				Log.i("", result);
-				progDialog.dismiss();
-				statusA.setText(result);
+
+		protected void onPostExecute(String result) {
+			progDialog.dismiss();
+			JSONArray json = null; try {
+				json = new JSONArray(result);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			try {
+				statusA.setText(json.getJSONObject(0).getJSONArray("dryerTimes").getString(0));
+				Log.i("", json.getJSONObject(0).toString(1));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
-		
+
 	}
 }
