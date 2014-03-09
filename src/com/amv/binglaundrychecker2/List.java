@@ -37,7 +37,6 @@ public class List extends Activity {
 	private String title, washers, dryers, url;
 	private String[] buildings;
 	private String building, first, next;
-	private String[] communities;
 	int selected;
 	boolean hasNext;
 	private WebView webView;
@@ -47,6 +46,8 @@ public class List extends Activity {
 	int numComplete;
 	private TableLayout table;
 	private String apiURL = "http://binglaundry.herokuapp.com/status/";
+	private String communityURL = "http://binglaundry.herokuapp.com/communities";
+	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +105,8 @@ public class List extends Activity {
 		table.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View arg0) {
-				progDialog = new ProgressDialog(List.this);
-				progDialog.setMessage("Loading..");
-				progDialog.show();
-				new CallAPI().execute("Lehman");
+
+				new CallAPI().execute(apiURL + "Lehman", "status");
 				return true;
 			}
 		});
@@ -130,35 +129,11 @@ public class List extends Activity {
 	}
 
 	private void setCommunity() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Community");
-		builder.setCancelable(false);
-		selected = -1;
-		builder.setSingleChoiceItems(communities, selected,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						selected = which;
-					}
-				});
-		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-		final AlertDialog alert = builder.create();
-		alert.show();
-		Button positiveButton = alert
-				.getButton(DialogInterface.BUTTON_POSITIVE);
-		positiveButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				if (selected != -1) {
-					setBuilding(communities[selected]);
-					alert.dismiss();
-				}
-			}
-		});
+		new CallAPI().execute(communityURL, "community");
+	}
+
+	private void setBuilding(String community) {
+		new CallAPI().execute(buildingURL + community, "building");
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -179,7 +154,125 @@ public class List extends Activity {
 		return true;
 	}
 
-	private void setBuilding(String community) {
+	/*
+	 * Convert JSON string into string
+	 */
+	private static String convertInputStream(InputStream in) throws IOException {
+		int bytesRead;
+		byte[] contents = new byte[1024];
+		String string = null;
+		while ((bytesRead = in.read(contents)) != -1) {
+			string = new String(contents, 0, bytesRead);
+		}
+		return string;
+	}
+
+	// The three types are used for- params, progress, result
+	private class CallAPI extends AsyncTask<String, String, String[]> {
+
+		protected void onPreExecute() {
+			progDialog = new ProgressDialog(List.this);
+			progDialog.setMessage("Loading..");
+			progDialog.show();
+		}
+
+		/*
+		 * Get JSON response from url supplied
+		 */
+		@Override
+		protected String[] doInBackground(String... params) {
+			String urlString = params[0];
+
+			String[] result = { "", params[1] };
+			InputStream in = null;
+			URL url = null;
+			HttpURLConnection urlConnection = null;
+
+			try {
+				url = new URL(urlString);
+
+				urlConnection = (HttpURLConnection) url.openConnection();
+
+				in = new BufferedInputStream(urlConnection.getInputStream());
+
+				result[0] = convertInputStream(in);
+
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				urlConnection.disconnect();
+			}
+
+			return result;
+		}
+
+		protected void onPostExecute(String[] result) {
+			progDialog.dismiss();
+			JSONArray json = null;
+
+			try {
+				json = new JSONArray(result[0]);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			if (result[1] == "community")
+				postCommunityCall(json);
+			else if (result[1] == "status")
+				postStatusCall(json);
+			else if (result[1] == "building") {
+				postBuildingCall(json);
+			}
+
+		}
+	}
+
+	private void postCommunityCall(final JSONArray json) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Select Community");
+		builder.setCancelable(false);
+		selected = -1;
+		builder.setSingleChoiceItems(json, selected,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						selected = which;
+					}
+				});
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		final AlertDialog alert = builder.create();
+		alert.show();
+		Button positiveButton = alert
+				.getButton(DialogInterface.BUTTON_POSITIVE);
+		positiveButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				if (selected != -1) {
+					setBuilding(json[selected]);
+					alert.dismiss();
+				}
+			}
+		});
+	}
+
+	public void postStatusCall(JSONArray json) {
+		try {
+			statusA.setText(json.getJSONObject(0).getJSONArray("dryerTimes")
+					.getString(0));
+			Log.i("", json.getJSONObject(0).toString(1));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void postBuildingCall(JSONArray json) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Building");
 		builder.setCancelable(false);
@@ -211,63 +304,5 @@ public class List extends Activity {
 				}
 			}
 		});
-	}
-
-	private static String convertInputStream(InputStream in) throws IOException {
-		int bytesRead;
-		byte[] contents = new byte[1024];
-		String string = null;
-		while ((bytesRead = in.read(contents)) != -1) {
-			string = new String(contents, 0, bytesRead);
-		}
-		return string;
-	}
-
-	private class CallAPI extends AsyncTask<String, String, String> {
-
-		@Override
-		protected String doInBackground(String... params) {
-			String urlString = apiURL + "Lehman";
-
-			String resultToDisplay = "";
-			InputStream in = null;
-			URL url = null;
-			HttpURLConnection urlConnection = null;
-
-			try {
-				url = new URL(urlString);
-
-				urlConnection = (HttpURLConnection) url.openConnection();
-
-				in = new BufferedInputStream(urlConnection.getInputStream());
-
-				resultToDisplay = convertInputStream(in);
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				urlConnection.disconnect();
-			}
-
-			return resultToDisplay;
-		}
-
-		protected void onPostExecute(String result) {
-			progDialog.dismiss();
-			JSONArray json = null; try {
-				json = new JSONArray(result);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			try {
-				statusA.setText(json.getJSONObject(0).getJSONArray("dryerTimes").getString(0));
-				Log.i("", json.getJSONObject(0).toString(1));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-
 	}
 }
