@@ -45,7 +45,7 @@ public class List extends Activity {
 	boolean switcher;
 	int numComplete;
 	private TableLayout table;
-	private String apiURL = "http://binglaundry.herokuapp.com/status/";
+	private String statusURL = "http://binglaundry.herokuapp.com/status/";
 	private String communityURL = "http://binglaundry.herokuapp.com/communities";
 	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
 
@@ -58,7 +58,6 @@ public class List extends Activity {
 		// if building pref is not there then set building to null
 		building = prefs.getString("building", null);
 		// url of esuds to scrape data from
-		url = "http://binghamton-asi.esuds.net/RoomStatus/showRoomStatus.i?locationId=";
 		table = (TableLayout) findViewById(R.id.tableLayout);
 		initializeTextViews();
 	}
@@ -105,8 +104,8 @@ public class List extends Activity {
 		table.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View arg0) {
-
-				new CallAPI().execute(apiURL + "Lehman", "status");
+				// new CallAPI().execute(apiURL + "Lehman", "status");
+				new CallAPI().execute(communityURL, "community");
 				return true;
 			}
 		});
@@ -225,16 +224,23 @@ public class List extends Activity {
 			else if (result[1] == "building") {
 				postBuildingCall(json);
 			}
-
 		}
 	}
 
 	private void postCommunityCall(final JSONArray json) {
+		final String[] communities = new String[json.length()];
+		for (int i = 0; i < json.length(); i++) {
+			try {
+				communities[i] = json.getJSONObject(i).getString("name");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Select Community");
 		builder.setCancelable(false);
 		selected = -1;
-		builder.setSingleChoiceItems(json, selected,
+		builder.setSingleChoiceItems(communities, selected,
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -244,27 +250,20 @@ public class List extends Activity {
 		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				String community = communities[selected].replace(" ", "_");
+				new CallAPI().execute(buildingURL + community, "building");
+				dialog.dismiss();
 			}
 		});
 		final AlertDialog alert = builder.create();
 		alert.show();
-		Button positiveButton = alert
-				.getButton(DialogInterface.BUTTON_POSITIVE);
-		positiveButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				if (selected != -1) {
-					setBuilding(json[selected]);
-					alert.dismiss();
-				}
-			}
-		});
 	}
 
 	public void postStatusCall(JSONArray json) {
 		try {
-			statusA.setText(json.getJSONObject(0).getJSONArray("dryerTimes")
-					.getString(0));
+			statusA.setText(json.getJSONObject(0).getString("name"));
+			//statusA.setText(json.getJSONObject(0).getJSONArray("dryerTimes")
+			//		.getString(0));
 			Log.i("", json.getJSONObject(0).toString(1));
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -273,11 +272,18 @@ public class List extends Activity {
 	}
 
 	private void postBuildingCall(JSONArray json) {
+		final String[] buildings = new String[json.length()];
+		for (int i = 0; i < json.length(); i++) {
+			try {
+				buildings[i] = json.getJSONObject(i).getString("name");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Building");
+		builder.setTitle("Select Building");
 		builder.setCancelable(false);
 		selected = -1;
-		buildings = null;
 		builder.setSingleChoiceItems(buildings, selected,
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -288,21 +294,13 @@ public class List extends Activity {
 		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				System.out.println(buildings[selected]);
+				String building = buildings[selected].replace(" ", "_");
+				new CallAPI().execute(statusURL + building, "status");
+				dialog.dismiss();
 			}
 		});
 		final AlertDialog alert = builder.create();
 		alert.show();
-		Button positiveButton = alert
-				.getButton(DialogInterface.BUTTON_POSITIVE);
-		positiveButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				if (selected != -1) {
-					building = buildings[selected];
-					getStatus(building);
-					alert.dismiss();
-				}
-			}
-		});
 	}
 }
