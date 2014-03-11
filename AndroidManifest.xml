@@ -5,9 +5,9 @@
     android:versionName="2.4" >
 
     <uses-sdk
+        android:maxSdkVersion="18"
         android:minSdkVersion="14"
-        android:targetSdkVersion="17"
-        android:maxSdkVersion="18" />
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,15 +23,12 @@
         <activity
             android:name="com.amv.binglaundrychecker2.List"
             android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.amv.binglaundrychecker2.BaseActivity"
-            android:label="@string/app_name"
-            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

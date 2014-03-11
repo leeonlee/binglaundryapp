@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -31,7 +32,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class List extends BaseActivity implements OnRefreshListener {
+public class List extends Activity implements OnRefreshListener {
 	private ProgressDialog progDialog;
 	private String title, washers, dryers, url;
 	private String[] buildings;
@@ -84,7 +85,7 @@ public class List extends BaseActivity implements OnRefreshListener {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		//getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
@@ -358,6 +359,6 @@ public class List extends BaseActivity implements OnRefreshListener {
 
 	@Override
 	public void onRefreshStarted(View view) {
-		new CallAPI().execute(statusURL + "Lehman", "status");
+		new CallAPI().execute(statusURL + building, "status");
 	}
 }
