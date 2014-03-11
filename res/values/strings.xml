@@ -8,5 +8,6 @@
     <color name="ExpandChildBackground">#FFAFABAB</color>
     <color name="ExpandGroupBackground">#FF7C7C7C</color>
     <string name="zero">0</string>
+    <string name="pulldown">Pull down screen to refresh</string>
 
 </resources>

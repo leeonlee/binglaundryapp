@@ -22,33 +22,29 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 public class List extends Activity implements OnRefreshListener {
 	private ProgressDialog progDialog;
-	private String title, washers, dryers, url;
-	private String[] buildings;
-	private String building, first, next;
+	private String building;
 	int selected;
 	boolean hasNext;
-	private WebView webView;
 	private TextView time, nameA;
 
 	private Button washerAvailA, washerCompleteA, washerInUseA, dryerAvailA,
 			dryerCompleteA, dryerInUseA;
 
 	private TableRow washersA, dryersA, lineA;
+
 	boolean switcher;
 	int numComplete;
-	private TableLayout table;
 	private String statusURL = "http://binglaundry.herokuapp.com/status/";
 	private String communityURL = "http://binglaundry.herokuapp.com/communities";
 	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
@@ -60,17 +56,19 @@ public class List extends Activity implements OnRefreshListener {
 		setContentView(R.layout.blding_list);
 
 		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
-		ActionBarPullToRefresh.from(this).listener(this).allChildrenArePullable().setup(mPullToRefreshLayout);
+		ActionBarPullToRefresh.from(this).listener(this)
+				.allChildrenArePullable().setup(mPullToRefreshLayout);
 
-
-		// load the setup
+		// load saved configurations
 		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
 		// if building pref is not there then set building to null
 		building = prefs.getString("building", null);
-		// url of esuds to scrape data from
-		table = (TableLayout) findViewById(R.id.tableLayout);
-
-		getActionBar().setTitle("Binghamton Laundry Checker");
+		if (building == null) {
+			getActionBar().setTitle("Laundry Status");
+		} else {
+			getActionBar().setTitle(building);
+			getActionBar().setSubtitle("Laundry Status");
+		}
 		initializeTextViews();
 	}
 
@@ -85,7 +83,16 @@ public class List extends Activity implements OnRefreshListener {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.activity_main, menu);
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case com.amv.binglaundrychecker2.R.id.action_change:
+			setCommunity();
+			break;
+		}
 		return true;
 	}
 
@@ -116,18 +123,10 @@ public class List extends Activity implements OnRefreshListener {
 		lineA = (TableRow) findViewById(R.id.lineA);
 
 		time = (TextView) findViewById(R.id.time);
-		table.setLongClickable(true);
-		table.setOnLongClickListener(new OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View arg0) {
-				// new CallAPI().execute(apiURL + "Lehman", "status");
-				new CallAPI().execute(communityURL, "community");
-				return true;
-			}
-		});
 	}
 
 	private void getStatus(String building) {
+		new CallAPI().execute(statusURL + building, "status");
 	}
 
 	private void setCommunity() {
@@ -241,7 +240,7 @@ public class List extends Activity implements OnRefreshListener {
 			public void onClick(DialogInterface dialog, int which) {
 				if (selected != -1) {
 					String community = communities[selected].replace(" ", "_");
-					new CallAPI().execute(buildingURL + community, "building");
+					setBuilding(community);
 					dialog.dismiss();
 				}
 			}
@@ -320,7 +319,16 @@ public class List extends Activity implements OnRefreshListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
+			setTime();
 		}
+	}
+
+	private void setTime() {
+		Time now = new Time();
+		now.setToNow();
+		String hours = now.format("%l:%M");
+		time.setText("Status as of" + hours);
 	}
 
 	private void postBuildingCall(JSONArray json) {
@@ -359,6 +367,6 @@ public class List extends Activity implements OnRefreshListener {
 
 	@Override
 	public void onRefreshStarted(View view) {
-		new CallAPI().execute(statusURL + building, "status");
+		getStatus(building);
 	}
 }
