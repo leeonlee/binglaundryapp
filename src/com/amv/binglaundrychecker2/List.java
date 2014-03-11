@@ -25,7 +25,6 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -40,8 +39,10 @@ public class List extends Activity {
 	private WebView webView;
 	private TextView time, nameA;
 
-	private Button buildingName, washerAvailA, washerCompleteA,
-			washerInUseA;
+	private Button washerAvailA, washerCompleteA, washerInUseA, dryerAvailA,
+			dryerCompleteA, dryerInUseA;
+
+	private TableRow washersA, dryersA, lineA;
 	boolean switcher;
 	int numComplete;
 	private TableLayout table;
@@ -93,6 +94,17 @@ public class List extends Activity {
 		washerCompleteA.setTypeface(tf);
 		washerInUseA = (Button) findViewById(R.id.washerInUseA);
 		washerInUseA.setTypeface(tf2);
+		washersA = (TableRow) findViewById(R.id.washersA);
+
+		dryerAvailA = (Button) findViewById(R.id.dryerAvailA);
+		dryerAvailA.setTypeface(tf);
+		dryerCompleteA = (Button) findViewById(R.id.dryerCompleteA);
+		dryerCompleteA.setTypeface(tf);
+		dryerInUseA = (Button) findViewById(R.id.dryerInUseA);
+		dryerInUseA.setTypeface(tf2);
+		dryersA = (TableRow) findViewById(R.id.dryersA);
+
+		lineA = (TableRow) findViewById(R.id.lineA);
 
 		time = (TextView) findViewById(R.id.time);
 		table.setLongClickable(true);
@@ -214,9 +226,11 @@ public class List extends Activity {
 		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				String community = communities[selected].replace(" ", "_");
-				new CallAPI().execute(buildingURL + community, "building");
-				dialog.dismiss();
+				if (selected != -1) {
+					String community = communities[selected].replace(" ", "_");
+					new CallAPI().execute(buildingURL + community, "building");
+					dialog.dismiss();
+				}
 			}
 		});
 		final AlertDialog alert = builder.create();
@@ -225,25 +239,70 @@ public class List extends Activity {
 
 	public void postStatusCall(JSONArray json) {
 		for (int i = 0; i < 1/* json.length() */; i++) {
+			lineA.setVisibility(View.VISIBLE);
 			JSONObject object;
 			try {
 				object = json.getJSONObject(i);
-				int washerAvail = object.getInt("washerAvail");
-				int washerTotal = object.getInt("washerTotal");
-				int washerInUse = object.getInt("washerInUse");
-				int washerComplete = washerTotal - washerInUse - washerAvail;
-
 				nameA.setText(object.getString("name"));
-				washerAvailA.setText(Integer.toString(washerAvail));
-				washerInUseA.setText(Integer.toString(washerInUse));
-				washerCompleteA.setText(Integer.toString(washerComplete));
 
-				float weightPerMachine = 96 / washerTotal;
-				washerAvailA.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, weightPerMachine * washerAvail));
-				washerInUseA.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, weightPerMachine * washerInUse));
-				washerCompleteA.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, weightPerMachine * washerComplete));
-				
+				int avail = object.getInt("washerAvail");
+				int total = object.getInt("washerTotal");
+				int inUse = object.getInt("washerInUse");
+				int complete = object.getInt("washerComplete");
 
+				float weightPerMachine;
+
+				if (total > 0) {
+					washersA.setVisibility(View.VISIBLE);
+					washerAvailA.setText(Integer.toString(avail));
+					washerInUseA.setText(Integer.toString(inUse));
+					washerCompleteA.setText(Integer.toString(complete));
+
+					weightPerMachine = 96 / total;
+
+					washerAvailA
+							.setLayoutParams(new TableRow.LayoutParams(0,
+									LayoutParams.WRAP_CONTENT, weightPerMachine
+											* avail));
+					washerInUseA
+							.setLayoutParams(new TableRow.LayoutParams(0,
+									LayoutParams.WRAP_CONTENT, weightPerMachine
+											* inUse));
+					washerCompleteA.setLayoutParams(new TableRow.LayoutParams(
+							0, LayoutParams.WRAP_CONTENT, weightPerMachine
+									* complete));
+				} else {
+					washersA.setVisibility(View.INVISIBLE);
+					lineA.setVisibility(View.INVISIBLE);
+				}
+
+				avail = object.getInt("dryerAvail");
+				total = object.getInt("dryerTotal");
+				inUse = object.getInt("dryerInUse");
+				complete = object.getInt("dryerComplete");
+
+				if (total > 0) {
+					dryersA.setVisibility(View.VISIBLE);
+					dryerAvailA.setText(Integer.toString(avail));
+					dryerInUseA.setText(Integer.toString(inUse));
+					dryerCompleteA.setText(Integer.toString(complete));
+
+					weightPerMachine = 96 / total;
+					dryerAvailA
+							.setLayoutParams(new TableRow.LayoutParams(0,
+									LayoutParams.WRAP_CONTENT, weightPerMachine
+											* avail));
+					dryerInUseA
+							.setLayoutParams(new TableRow.LayoutParams(0,
+									LayoutParams.WRAP_CONTENT, weightPerMachine
+											* inUse));
+					dryerCompleteA.setLayoutParams(new TableRow.LayoutParams(0,
+							LayoutParams.WRAP_CONTENT, weightPerMachine
+									* complete));
+				} else {
+					dryersA.setVisibility(View.INVISIBLE);
+					lineA.setVisibility(View.INVISIBLE);
+				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -274,9 +333,11 @@ public class List extends Activity {
 		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				String building = buildings[selected].replace(" ", "_");
-				new CallAPI().execute(statusURL + building, "status");
-				dialog.dismiss();
+				if (selected != -1) {
+					String building = buildings[selected].replace(" ", "_");
+					new CallAPI().execute(statusURL + building, "status");
+					dialog.dismiss();
+				}
 			}
 		});
 		final AlertDialog alert = builder.create();

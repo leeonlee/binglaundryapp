@@ -28,7 +28,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/statusA"
+            android:id="@+id/washersA"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
@@ -66,14 +66,24 @@
                 android:text="@string/zero" >
             </Button>
         </TableRow>
+        <TableRow 
+            android:id="@+id/lineA"
+            android:layout_height="1dp"
+            android:background="@android:color/black">
+            <View 
+                android:layout_span="2"
+                android:layout_height="1dp"
+                android:layout_width="fill_parent">
+                
+            </View>
+        </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow6"
+            android:id="@+id/dryersA"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
             <Button
-                android:id="@+id/dryerAvailA"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="4"
@@ -82,11 +92,20 @@
             </Button>
 
             <Button
+                android:id="@+id/dryerAvailA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="32"
+                android:background="@android:color/holo_green_dark"
+                android:text="@string/zero" >
+            </Button>
+
+            <Button
                 android:id="@+id/dryerCompleteA"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:background="@android:color/holo_green_dark"
+                android:layout_weight="32"
+                android:background="@android:color/holo_orange_dark"
                 android:text="@string/zero" >
             </Button>
 
@@ -94,15 +113,7 @@
                 android:id="@+id/dryerInUseA"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:background="@android:color/holo_orange_dark"
-                android:text="@string/zero" >
-            </Button>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
+                android:layout_weight="32"
                 android:background="@android:color/holo_red_dark"
                 android:text="@string/zero" >
             </Button>
