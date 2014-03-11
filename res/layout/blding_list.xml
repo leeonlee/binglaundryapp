@@ -1,133 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/lib/com.google.ads"
+<uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ptr_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <TableLayout
-        android:id="@+id/tableLayout"
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/background_light"
-        android:paddingTop="20dp" >
+        android:padding="8dp"
+        android:scrollbarStyle="outsideInset" >
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-
-            <TextView
-                android:id="@+id/nameA"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_horizontal"
-                android:layout_weight="100"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/washersA"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
 
-            <Button
-                android:layout_width="0dp"
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="4"
-                android:background="@android:color/holo_blue_dark" >
-            </Button>
+                android:paddingTop="20dp" >
 
-            <Button
-                android:id="@+id/washerAvailA"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="32"
-                android:background="@android:color/holo_green_dark"
-                android:text="@string/zero" >
-            </Button>
+                <TableRow
+                    android:id="@+id/tableRow1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
-            <Button
-                android:id="@+id/washerCompleteA"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="32"
-                android:background="@android:color/holo_orange_dark"
-                android:text="@string/zero" >
-            </Button>
+                    <TextView
+                        android:id="@+id/nameA"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|center_horizontal"
+                        android:layout_weight="100"
+                        android:gravity="center"
+                        android:textSize="18sp" />
+                </TableRow>
 
-            <Button
-                android:id="@+id/washerInUseA"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="32"
-                android:background="@android:color/holo_red_dark"
-                android:text="@string/zero" >
-            </Button>
-        </TableRow>
-        <TableRow 
-            android:id="@+id/lineA"
-            android:layout_height="1dp"
-            android:background="@android:color/black">
-            <View 
-                android:layout_span="2"
-                android:layout_height="1dp"
-                android:layout_width="fill_parent">
-                
-            </View>
-        </TableRow>
+                <TableRow
+                    android:id="@+id/washersA"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
 
-        <TableRow
-            android:id="@+id/dryersA"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="4"
+                        android:background="@android:color/holo_blue_dark" >
+                    </Button>
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="4"
-                android:background="@android:color/darker_gray"
-                android:textSize="12sp" >
-            </Button>
+                    <Button
+                        android:id="@+id/washerAvailA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="32"
+                        android:background="@android:color/holo_green_dark"
+                        android:text="@string/zero" >
+                    </Button>
 
-            <Button
-                android:id="@+id/dryerAvailA"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="32"
-                android:background="@android:color/holo_green_dark"
-                android:text="@string/zero" >
-            </Button>
+                    <Button
+                        android:id="@+id/washerCompleteA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="32"
+                        android:background="@android:color/holo_orange_dark"
+                        android:text="@string/zero" >
+                    </Button>
 
-            <Button
-                android:id="@+id/dryerCompleteA"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="32"
-                android:background="@android:color/holo_orange_dark"
-                android:text="@string/zero" >
-            </Button>
+                    <Button
+                        android:id="@+id/washerInUseA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="32"
+                        android:background="@android:color/holo_red_dark"
+                        android:text="@string/zero" >
+                    </Button>
+                </TableRow>
 
-            <Button
-                android:id="@+id/dryerInUseA"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="32"
-                android:background="@android:color/holo_red_dark"
-                android:text="@string/zero" >
-            </Button>
-        </TableRow>
-    </TableLayout>
+                <TableRow
+                    android:id="@+id/lineA"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black" >
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="Hold the screen to refresh"
-        android:textSize="12sp" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_span="2" >
+                    </View>
+                </TableRow>
 
-</RelativeLayout>
+                <TableRow
+                    android:id="@+id/dryersA"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="4"
+                        android:background="@android:color/darker_gray"
+                        android:textSize="12sp" >
+                    </Button>
+
+                    <Button
+                        android:id="@+id/dryerAvailA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="32"
+                        android:background="@android:color/holo_green_dark"
+                        android:text="@string/zero" >
+                    </Button>
+
+                    <Button
+                        android:id="@+id/dryerCompleteA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="32"
+                        android:background="@android:color/holo_orange_dark"
+                        android:text="@string/zero" >
+                    </Button>
+
+                    <Button
+                        android:id="@+id/dryerInUseA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="32"
+                        android:background="@android:color/holo_red_dark"
+                        android:text="@string/zero" >
+                    </Button>
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" 
+                android:layout_below="@id/tableLayout">
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Hold the screen to refresh"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>

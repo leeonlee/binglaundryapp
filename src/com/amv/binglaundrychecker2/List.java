@@ -11,7 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -29,7 +31,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class List extends Activity {
+public class List extends BaseActivity implements OnRefreshListener {
 	private ProgressDialog progDialog;
 	private String title, washers, dryers, url;
 	private String[] buildings;
@@ -49,11 +51,17 @@ public class List extends Activity {
 	private String statusURL = "http://binglaundry.herokuapp.com/status/";
 	private String communityURL = "http://binglaundry.herokuapp.com/communities";
 	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
+	private PullToRefreshLayout mPullToRefreshLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.blding_list);
+
+		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
+		ActionBarPullToRefresh.from(this).listener(this).allChildrenArePullable().setup(mPullToRefreshLayout);
+
+
 		// load the setup
 		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
 		// if building pref is not there then set building to null
@@ -200,6 +208,10 @@ public class List extends Activity {
 			else if (result[1] == "building") {
 				postBuildingCall(json);
 			}
+
+			if (mPullToRefreshLayout.isRefreshing()) {
+				mPullToRefreshLayout.setRefreshComplete();
+			}
 		}
 	}
 
@@ -334,7 +346,7 @@ public class List extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (selected != -1) {
-					String building = buildings[selected].replace(" ", "_");
+					building = buildings[selected].replace(" ", "_");
 					new CallAPI().execute(statusURL + building, "status");
 					dialog.dismiss();
 				}
@@ -342,5 +354,10 @@ public class List extends Activity {
 		});
 		final AlertDialog alert = builder.create();
 		alert.show();
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		new CallAPI().execute(statusURL + "Lehman", "status");
 	}
 }
