@@ -130,10 +130,12 @@ public class List extends Activity implements OnRefreshListener {
 	}
 
 	private void setCommunity() {
+		callProgDialog();
 		new CallAPI().execute(communityURL, "community");
 	}
 
 	private void setBuilding(String community) {
+		callProgDialog();
 		new CallAPI().execute(buildingURL + community, "building");
 	}
 
@@ -150,14 +152,14 @@ public class List extends Activity implements OnRefreshListener {
 		return string;
 	}
 
+	private void callProgDialog() {
+		progDialog = new ProgressDialog(List.this);
+		progDialog.setMessage("Loading..");
+		progDialog.show();
+	}
+
 	// The three types are used for- params, progress, result
 	private class CallAPI extends AsyncTask<String, String, String[]> {
-
-		protected void onPreExecute() {
-			progDialog = new ProgressDialog(List.this);
-			progDialog.setMessage("Loading..");
-			progDialog.show();
-		}
 
 		/*
 		 * Get JSON response from url supplied
@@ -192,7 +194,6 @@ public class List extends Activity implements OnRefreshListener {
 		}
 
 		protected void onPostExecute(String[] result) {
-			progDialog.dismiss();
 			JSONArray json = null;
 
 			try {
@@ -247,6 +248,7 @@ public class List extends Activity implements OnRefreshListener {
 		});
 		final AlertDialog alert = builder.create();
 		alert.show();
+		progDialog.dismiss();
 	}
 
 	public void postStatusCall(JSONArray json) {
