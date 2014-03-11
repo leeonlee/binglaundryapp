@@ -7,5 +7,6 @@
     <color name="Black">#000000</color>
     <color name="ExpandChildBackground">#FFAFABAB</color>
     <color name="ExpandGroupBackground">#FF7C7C7C</color>
+    <string name="zero">0</string>
 
 </resources>

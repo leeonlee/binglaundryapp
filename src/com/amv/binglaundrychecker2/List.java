@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,20 +15,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class List extends Activity {
@@ -40,8 +38,10 @@ public class List extends Activity {
 	int selected;
 	boolean hasNext;
 	private WebView webView;
-	private TextView buildingName, statusA, statusB, buildingNameB, status1,
-			status2, time;
+	private TextView time, nameA;
+
+	private Button buildingName, washerAvailA, washerCompleteA,
+			washerInUseA;
 	boolean switcher;
 	int numComplete;
 	private TableLayout table;
@@ -59,6 +59,8 @@ public class List extends Activity {
 		building = prefs.getString("building", null);
 		// url of esuds to scrape data from
 		table = (TableLayout) findViewById(R.id.tableLayout);
+
+		getActionBar().setTitle("Binghamton Laundry Checker");
 		initializeTextViews();
 	}
 
@@ -82,23 +84,16 @@ public class List extends Activity {
 				"fonts/Roboto-BoldCondensed.ttf");
 		Typeface tf2 = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-Medium.ttf");
-		buildingName = (TextView) findViewById(R.id.building);
-		buildingName.setTypeface(tf);
-		// statusA = A side of first building
-		statusA = (TextView) findViewById(R.id.statusA);
-		statusA.setTypeface(tf2);
-		// statusB = B side of first building
-		statusB = (TextView) findViewById(R.id.statusB);
-		statusB.setTypeface(tf2);
-		// building name of second building
-		buildingNameB = (TextView) findViewById(R.id.buildingB);
-		buildingNameB.setTypeface(tf);
-		// status 1 = A side of second building
-		status1 = (TextView) findViewById(R.id.status1);
-		status1.setTypeface(tf2);
-		// status 2 = B side of second building
-		status2 = (TextView) findViewById(R.id.status2);
-		status2.setTypeface(tf2);
+		nameA = (TextView) findViewById(R.id.nameA);
+		nameA.setTypeface(tf);
+
+		washerAvailA = (Button) findViewById(R.id.washerAvailA);
+		washerAvailA.setTypeface(tf);
+		washerCompleteA = (Button) findViewById(R.id.washerCompleteA);
+		washerCompleteA.setTypeface(tf);
+		washerInUseA = (Button) findViewById(R.id.washerInUseA);
+		washerInUseA.setTypeface(tf2);
+
 		time = (TextView) findViewById(R.id.time);
 		table.setLongClickable(true);
 		table.setOnLongClickListener(new OnLongClickListener() {
@@ -112,19 +107,6 @@ public class List extends Activity {
 	}
 
 	private void getStatus(String building) {
-		// setting values to reset to while it loads
-		buildingName.setText("");
-		statusA.setText("");
-		statusB.setText("");
-		buildingNameB.setText("");
-		status1.setText("");
-		status2.setText("");
-		// initially set that the building has two sides (A and B)
-		hasNext = true;
-		webView.loadUrl(url + first);
-		// switch for the webview to load a second time for the second building
-		switcher = true;
-		progDialog = ProgressDialog.show(List.this, "", "Working..", true);
 	}
 
 	private void setCommunity() {
@@ -133,24 +115,6 @@ public class List extends Activity {
 
 	private void setBuilding(String community) {
 		new CallAPI().execute(buildingURL + community, "building");
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case com.amv.binglaundrychecker2.R.id.about:
-			Intent i = new Intent(List.this,
-					com.amv.binglaundrychecker2.About.class);
-			startActivity(i);
-			break;
-		case com.amv.binglaundrychecker2.R.id.reset:
-			setCommunity();
-			SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putBoolean("FIRSTRUN", true);
-			editor.commit();
-			break;
-		}
-		return true;
 	}
 
 	/*
@@ -260,15 +224,31 @@ public class List extends Activity {
 	}
 
 	public void postStatusCall(JSONArray json) {
-		try {
-			statusA.setText(json.getJSONObject(0).getString("name"));
-			//statusA.setText(json.getJSONObject(0).getJSONArray("dryerTimes")
-			//		.getString(0));
-			Log.i("", json.getJSONObject(0).toString(1));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		for (int i = 0; i < 1/* json.length() */; i++) {
+			JSONObject object;
+			try {
+				object = json.getJSONObject(i);
+				int washerAvail = object.getInt("washerAvail");
+				int washerTotal = object.getInt("washerTotal");
+				int washerInUse = object.getInt("washerInUse");
+				int washerComplete = washerTotal - washerInUse - washerAvail;
 
+				nameA.setText(object.getString("name"));
+				washerAvailA.setText(Integer.toString(washerAvail));
+				washerInUseA.setText(Integer.toString(washerInUse));
+				washerCompleteA.setText(Integer.toString(washerComplete));
+
+				float weightPerMachine = 96 / washerTotal;
+				washerAvailA.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, weightPerMachine * washerAvail));
+				washerInUseA.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, weightPerMachine * washerInUse));
+				washerCompleteA.setLayoutParams(new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, weightPerMachine * washerComplete));
+				
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void postBuildingCall(JSONArray json) {
@@ -294,7 +274,6 @@ public class List extends Activity {
 		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				System.out.println(buildings[selected]);
 				String building = buildings[selected].replace(" ", "_");
 				new CallAPI().execute(statusURL + building, "status");
 				dialog.dismiss();

@@ -8,77 +8,104 @@
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="fill_parent"
-        android:paddingTop="20dp"
         android:layout_height="fill_parent"
-        android:stretchColumns="0,1" >
+        android:background="@android:color/background_light"
+        android:paddingTop="20dp" >
 
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" >
+            >
 
             <TextView
-                android:id="@+id/building"
-                android:layout_width="wrap_content"
+                android:id="@+id/nameA"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal"
-                android:layout_span="2"
+                android:layout_weight="100"
                 android:textSize="18sp" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
+            android:id="@+id/statusA"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/statusA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="16sp" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="4"
+                android:background="@android:color/holo_blue_dark" >
+            </Button>
 
-            <TextView
-                android:id="@+id/statusB"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/washerAvailA"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="16sp" />
+                android:layout_weight="32"
+                android:background="@android:color/holo_green_dark"
+                android:text="@string/zero" >
+            </Button>
+
+            <Button
+                android:id="@+id/washerCompleteA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="32"
+                android:background="@android:color/holo_orange_dark"
+                android:text="@string/zero" >
+            </Button>
+
+            <Button
+                android:id="@+id/washerInUseA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="32"
+                android:background="@android:color/holo_red_dark"
+                android:text="@string/zero" >
+            </Button>
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
+            android:id="@+id/tableRow6"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/buildingB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_span="2"
-                android:gravity="center"
-                android:textSize="18sp" />
-        </TableRow>
+            <Button
+                android:id="@+id/dryerAvailA"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="4"
+                android:background="@android:color/darker_gray"
+                android:textSize="12sp" >
+            </Button>
 
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/status1"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/dryerCompleteA"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="16sp" />
+                android:layout_weight="33"
+                android:background="@android:color/holo_green_dark"
+                android:text="@string/zero" >
+            </Button>
 
-            <TextView
-                android:id="@+id/status2"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/dryerInUseA"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="16sp" />
+                android:layout_weight="33"
+                android:background="@android:color/holo_orange_dark"
+                android:text="@string/zero" >
+            </Button>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:background="@android:color/holo_red_dark"
+                android:text="@string/zero" >
+            </Button>
         </TableRow>
     </TableLayout>
 
@@ -87,9 +114,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:textSize="12sp"
         android:layout_centerHorizontal="true"
-        android:text="Hold the screen to refresh" />
+        android:gravity="center"
+        android:text="Hold the screen to refresh"
+        android:textSize="12sp" />
 
 </RelativeLayout>
