@@ -70,7 +70,6 @@ public class List extends Activity implements OnRefreshListener {
 		} else {
 			getActionBar().setTitle(building);
 			getActionBar().setSubtitle("Laundry Status");
-			mPullToRefreshLayout.setRefreshing(true);
 			getStatus(building);
 		}
 		heightInDp = (int) TypedValue.applyDimension(
@@ -159,6 +158,7 @@ public class List extends Activity implements OnRefreshListener {
 	}
 
 	private void getStatus(String building) {
+		mPullToRefreshLayout.setRefreshing(true);
 		new CallAPI().execute(statusURL + building, "status");
 	}
 
