@@ -4,4 +4,10 @@ Scrapes Binghamton University's esuds to provide faster and easier to read infor
 
 
 uses https://github.com/chrisbanes/ActionBar-PullToRefresh
+
 and https://github.com/castorflex/SmoothProgressBar
+
+todo:
+show times
+
+set timer
