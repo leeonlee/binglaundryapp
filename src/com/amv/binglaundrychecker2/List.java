@@ -334,7 +334,7 @@ public class List extends Activity implements OnRefreshListener {
 		Time now = new Time();
 		now.setToNow();
 		String hours = now.format("%l:%M");
-		time.setText("Status as of" + hours);
+		time.setText("Status as of " + hours);
 	}
 
 	private void postBuildingCall(JSONArray json) {
