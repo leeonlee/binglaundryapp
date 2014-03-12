@@ -42,40 +42,44 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
 
-                    <Button
+                    <TextView
                         android:id="@+id/washIndicator"
                         android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="50sp"
                         android:layout_weight="4"
-                        android:background="@android:color/holo_blue_dark" >
-                    </Button>
+                        android:background="@android:color/holo_blue_dark"
+                        android:gravity="center" >
+                    </TextView>
 
-                    <Button
+                    <TextView
                         android:id="@+id/washerAvailA"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_green_dark"
+                        android:gravity="center"
                         android:text="@string/zero" >
-                    </Button>
+                    </TextView>
 
-                    <Button
+                    <TextView
                         android:id="@+id/washerCompleteA"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_orange_dark"
+                        android:gravity="center"
                         android:text="@string/zero" >
-                    </Button>
+                    </TextView>
 
-                    <Button
+                    <TextView
                         android:id="@+id/washerInUseA"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_red_dark"
+                        android:gravity="center"
                         android:text="@string/zero" >
-                    </Button>
+                    </TextView>
                 </TableRow>
 
                 <TableRow
@@ -93,49 +97,54 @@
                 <TableRow
                     android:id="@+id/dryersA"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="50sp" >
 
-                    <Button
+                    <TextView
                         android:id="@+id/dryerIndicator"
                         android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="50sp"
                         android:layout_weight="4"
                         android:background="@android:color/darker_gray"
+                        android:gravity="center"
                         android:textSize="12sp" >
-                    </Button>
+                    </TextView>
 
-                    <Button
+                    <TextView
                         android:id="@+id/dryerAvailA"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_green_dark"
+                        android:gravity="center"
                         android:text="@string/zero" >
-                    </Button>
+                    </TextView>
 
-                    <Button
+                    <TextView
                         android:id="@+id/dryerCompleteA"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_orange_dark"
+                        android:gravity="center"
                         android:text="@string/zero" >
-                    </Button>
+                    </TextView>
 
-                    <Button
+                    <TextView
                         android:id="@+id/dryerInUseA"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_red_dark"
+                        android:gravity="center"
                         android:text="@string/zero" >
-                    </Button>
+                    </TextView>
                 </TableRow>
 
                 <TableRow
                     android:id="@+id/TableRow04"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70sp" >
 
                     <TextView
                         android:id="@+id/TextView01"
@@ -151,34 +160,38 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
 
-                    <Button
+                    <TextView
                         android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="50sp"
                         android:layout_weight="4"
-                        android:background="@android:color/holo_blue_dark" />
+                        android:background="@android:color/holo_blue_dark"
+                        android:gravity="center" />
 
-                    <Button
-                        android:id="@+id/Button06"
+                    <TextView
+                        android:id="@+id/TextView06"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_green_dark"
+                        android:gravity="center"
                         android:text="@string/zero" />
 
-                    <Button
-                        android:id="@+id/Button04"
+                    <TextView
+                        android:id="@+id/TextView04"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_orange_dark"
+                        android:gravity="center"
                         android:text="@string/zero" />
 
-                    <Button
-                        android:id="@+id/Button01"
+                    <TextView
+                        android:id="@+id/TextView09"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_red_dark"
+                        android:gravity="center"
                         android:text="@string/zero" />
                 </TableRow>
 
@@ -198,35 +211,39 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
 
-                    <Button
+                    <TextView
                         android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="50sp"
                         android:layout_weight="4"
                         android:background="@android:color/darker_gray"
+                        android:gravity="center"
                         android:textSize="12sp" />
 
-                    <Button
-                        android:id="@+id/Button02"
+                    <TextView
+                        android:id="@+id/TextView02"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_green_dark"
+                        android:gravity="center"
                         android:text="@string/zero" />
 
-                    <Button
-                        android:id="@+id/Button03"
+                    <TextView
+                        android:id="@+id/TextView03"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_orange_dark"
+                        android:gravity="center"
                         android:text="@string/zero" />
 
-                    <Button
-                        android:id="@+id/Button05"
+                    <TextView
+                        android:id="@+id/TextView05"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_red_dark"
+                        android:gravity="center"
                         android:text="@string/zero" />
                 </TableRow>
             </TableLayout>
@@ -259,7 +276,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:gravity="center|center_vertical"
             android:orientation="horizontal" >
 
             <TextView
@@ -273,8 +290,8 @@
                 android:id="@+id/availDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/avail"
-                android:textSize="12sp" />
+                android:layout_marginRight="5sp"
+                android:text="@string/avail" />
 
             <TextView
                 android:id="@+id/completeColor"
@@ -287,6 +304,7 @@
                 android:id="@+id/completeDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5sp"
                 android:text="@string/complete" />
 
             <TextView
@@ -300,6 +318,7 @@
                 android:id="@+id/inUseDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5sp"
                 android:text="@string/inUse" />
 
             <TextView
@@ -313,6 +332,7 @@
                 android:id="@+id/washerDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5sp"
                 android:text="@string/washer" />
 
             <TextView
@@ -326,6 +346,7 @@
                 android:id="@+id/dryerDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5sp"
                 android:text="@string/dryer" />
         </LinearLayout>
     </LinearLayout>
