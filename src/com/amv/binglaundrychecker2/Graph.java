@@ -109,16 +109,16 @@ class Graph {
 		int length = jsonArray.length();
 		String returnString = "";
 		try {
-			returnString = jsonArray.getString(0);
+			returnString = jsonArray.getString(0) + " min";
 			for (int i = 1; i < length; i++) {
-				returnString += ", " + jsonArray.get(i);
+				returnString += ", " + jsonArray.get(i) + " min";
 
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
-		return returnString + " min";
+		return returnString;
 	}
 
 	public void setClickListeners() {
@@ -129,7 +129,7 @@ class Graph {
 
 			@Override
 			public void onClick(View v) {
-				int duration = Toast.LENGTH_LONG;
+				int duration = Toast.LENGTH_SHORT;
 
 				Toast toast = Toast.makeText(context, washerTimes, duration);
 				toast.show();
@@ -140,7 +140,7 @@ class Graph {
 
 			@Override
 			public void onClick(View v) {
-				int duration = Toast.LENGTH_LONG;
+				int duration = Toast.LENGTH_SHORT;
 
 				Toast toast = Toast.makeText(context, dryerTimes, duration);
 				toast.show();
