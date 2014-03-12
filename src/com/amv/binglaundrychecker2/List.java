@@ -58,18 +58,20 @@ public class List extends Activity implements OnRefreshListener {
 				.allChildrenArePullable().setup(mPullToRefreshLayout);
 		initializeTextViews();
 
+		graphs[0].setGraphInvisible();
+		graphs[1].setGraphInvisible();
 		// load saved configurations
 		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
 		// if building pref is not there then set building to null
 		building = prefs.getString("building", null);
 		if (building == null) {
 			getActionBar().setTitle("Laundry Status");
-			graphs[0].setGraphInvisible();
-			graphs[1].setGraphInvisible();
 			setCommunity();
 		} else {
 			getActionBar().setTitle(building);
 			getActionBar().setSubtitle("Laundry Status");
+			mPullToRefreshLayout.setRefreshing(true);
+			getStatus(building);
 		}
 		heightInDp = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
