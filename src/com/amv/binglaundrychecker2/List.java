@@ -52,10 +52,11 @@ public class List extends Activity implements OnRefreshListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.blding_list);
-		
+
 		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
 		ActionBarPullToRefresh.from(this).listener(this)
 				.allChildrenArePullable().setup(mPullToRefreshLayout);
+		initializeTextViews();
 
 		// load saved configurations
 		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
@@ -63,6 +64,9 @@ public class List extends Activity implements OnRefreshListener {
 		building = prefs.getString("building", null);
 		if (building == null) {
 			getActionBar().setTitle("Laundry Status");
+			graphs[0].setGraphInvisible();
+			graphs[1].setGraphInvisible();
+			setCommunity();
 		} else {
 			getActionBar().setTitle(building);
 			getActionBar().setSubtitle("Laundry Status");
@@ -70,7 +74,6 @@ public class List extends Activity implements OnRefreshListener {
 		heightInDp = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
 						.getDisplayMetrics());
-		initializeTextViews();
 	}
 
 	// save the setup
@@ -291,8 +294,8 @@ public class List extends Activity implements OnRefreshListener {
 			}
 			setTime();
 		}
-		
-		if (json.length() == 1){
+
+		if (json.length() == 1) {
 			graphs[1].setGraphInvisible();
 		}
 	}
@@ -330,6 +333,10 @@ public class List extends Activity implements OnRefreshListener {
 				if (selected != -1) {
 					building = buildings[selected].replace(" ", "_");
 					new CallAPI().execute(statusURL + building, "status");
+					SharedPreferences.Editor editor = getPreferences(
+							MODE_PRIVATE).edit();
+					editor.putString("building", building);
+					editor.commit();
 					dialog.dismiss();
 				}
 			}
