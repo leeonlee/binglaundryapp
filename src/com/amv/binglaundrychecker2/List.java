@@ -42,7 +42,7 @@ public class List extends Activity implements OnRefreshListener {
 	private TextView washerAvailA, washerCompleteA, washerInUseA, dryerAvailA,
 			dryerCompleteA, dryerInUseA;
 
-	private Button washerAvailB, washerCompleteB, washerInUseB, dryerAvailB,
+	private TextView washerAvailB, washerCompleteB, washerInUseB, dryerAvailB,
 			dryerCompleteB, dryerInUseB;
 
 	private TableRow washersA, dryersA, lineA;
@@ -54,6 +54,7 @@ public class List extends Activity implements OnRefreshListener {
 	private String communityURL = "http://binglaundry.herokuapp.com/communities";
 	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
 	private PullToRefreshLayout mPullToRefreshLayout;
+	private int heightInDp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,9 @@ public class List extends Activity implements OnRefreshListener {
 			getActionBar().setTitle(building);
 			getActionBar().setSubtitle("Laundry Status");
 		}
+		heightInDp = (int) TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
+						.getDisplayMetrics());
 		initializeTextViews();
 	}
 
@@ -125,7 +129,27 @@ public class List extends Activity implements OnRefreshListener {
 		dryerInUseA.setTypeface(tf2);
 		dryersA = (TableRow) findViewById(R.id.dryersA);
 
+		nameA = (TextView) findViewById(R.id.nameA);
+		nameA.setTypeface(tf);
+
+		washerAvailB = (TextView) findViewById(R.id.washerAvailB);
+		washerAvailB.setTypeface(tf);
+		washerCompleteB = (TextView) findViewById(R.id.washerCompleteB);
+		washerCompleteB.setTypeface(tf);
+		washerInUseB = (TextView) findViewById(R.id.washerInUseB);
+		washerInUseB.setTypeface(tf2);
+		washersB = (TableRow) findViewById(R.id.washersB);
+
+		dryerAvailB = (TextView) findViewById(R.id.dryerAvailB);
+		dryerAvailB.setTypeface(tf);
+		dryerCompleteB = (TextView) findViewById(R.id.dryerCompleteB);
+		dryerCompleteB.setTypeface(tf);
+		dryerInUseB = (TextView) findViewById(R.id.dryerInUseB);
+		dryerInUseB.setTypeface(tf2);
+		dryersB = (TableRow) findViewById(R.id.dryersB);
+
 		lineA = (TableRow) findViewById(R.id.lineA);
+		lineB = (TableRow) findViewById(R.id.lineB);
 
 		time = (TextView) findViewById(R.id.time);
 	}
@@ -271,9 +295,6 @@ public class List extends Activity implements OnRefreshListener {
 
 				float weightPerMachine;
 
-				int height = (int) TypedValue.applyDimension(
-						TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
-								.getDisplayMetrics());
 				if (total > 0) {
 					washersA.setVisibility(View.VISIBLE);
 					washerAvailA.setText(Integer.toString(avail));
@@ -283,11 +304,11 @@ public class List extends Activity implements OnRefreshListener {
 					weightPerMachine = 96 / total;
 
 					washerAvailA.setLayoutParams(new TableRow.LayoutParams(0,
-							height, weightPerMachine * avail));
+							heightInDp, weightPerMachine * avail));
 					washerInUseA.setLayoutParams(new TableRow.LayoutParams(0,
-							height, weightPerMachine * inUse));
+							heightInDp, weightPerMachine * inUse));
 					washerCompleteA.setLayoutParams(new TableRow.LayoutParams(
-							0, height, weightPerMachine * complete));
+							0, heightInDp, weightPerMachine * complete));
 				} else {
 					washersA.setVisibility(View.INVISIBLE);
 					lineA.setVisibility(View.INVISIBLE);
@@ -306,11 +327,11 @@ public class List extends Activity implements OnRefreshListener {
 
 					weightPerMachine = 96 / total;
 					dryerAvailA.setLayoutParams(new TableRow.LayoutParams(0,
-							height, weightPerMachine * avail));
+							heightInDp, weightPerMachine * avail));
 					dryerInUseA.setLayoutParams(new TableRow.LayoutParams(0,
-							height, weightPerMachine * inUse));
+							heightInDp, weightPerMachine * inUse));
 					dryerCompleteA.setLayoutParams(new TableRow.LayoutParams(0,
-							height, weightPerMachine * complete));
+							heightInDp, weightPerMachine * complete));
 				} else {
 					dryersA.setVisibility(View.INVISIBLE);
 					lineA.setVisibility(View.INVISIBLE);
