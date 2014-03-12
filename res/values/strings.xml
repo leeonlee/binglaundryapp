@@ -12,5 +12,6 @@
     <string name="complete">Completed </string>
     <string name="dryer">Dryer </string>
     <string name="washer">Washer </string>
+    <string name="change">Change Building</string>
 
 </resources>

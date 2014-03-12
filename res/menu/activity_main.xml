@@ -3,6 +3,5 @@
     <item
         android:id="@+id/action_change"
         android:showAsAction="ifRoom|withText"
-        android:title="Change building"/>
-
+        android:title="@string/change"/>
 </menu>
