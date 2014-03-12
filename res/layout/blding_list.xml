@@ -17,236 +17,248 @@
             android:padding="8dp"
             android:scrollbarStyle="outsideInset" >
 
-            <TableLayout
-                android:id="@+id/tableLayout"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp" >
+                android:orientation="vertical" >
 
-                <TableRow
-                    android:id="@+id/tableRow1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/nameA"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_horizontal"
-                        android:layout_weight="100"
-                        android:gravity="center"
-                        android:textSize="18sp" />
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/washersA"
+                <TableLayout
+                    android:id="@+id/tableLayoutA"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/washIndicatorA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="4"
-                        android:background="@android:color/holo_blue_dark"
-                        android:gravity="center" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/washerAvailA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_green_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/washerCompleteA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_orange_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/washerInUseA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_red_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" >
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/lineA"
-                    android:layout_height="1dp"
-                    android:background="@android:color/black" >
-
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1dp"
-                        android:layout_span="2" >
-                    </View>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/dryersA"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp" >
-
-                    <TextView
-                        android:id="@+id/dryerIndicatorA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="4"
-                        android:background="@android:color/darker_gray"
-                        android:gravity="center" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/dryerAvailA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_green_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/dryerCompleteA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_orange_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/dryerInUseA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_red_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" >
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/TableRow04"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="70sp" >
+                    android:paddingTop="20dp" >
 
-                    <TextView
-                        android:id="@+id/nameB"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_horizontal"
-                        android:layout_weight="100"
-                        android:gravity="center"
-                        android:textSize="18sp" />
-                </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
 
-                <TableRow
-                    android:id="@+id/washersB"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
+                        <TextView
+                            android:id="@+id/nameA"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|center_horizontal"
+                            android:layout_weight="100"
+                            android:gravity="center"
+                            android:textSize="18sp" />
+                    </TableRow>
 
-                    <TextView
-                        android:id="@+id/washerIndicatorA"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="4"
-                        android:background="@android:color/holo_blue_dark"
-                        android:gravity="center" />
-
-                    <TextView
-                        android:id="@+id/washerAvailB"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_green_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" />
-
-                    <TextView
-                        android:id="@+id/washerCompleteB"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_orange_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" />
-
-                    <TextView
-                        android:id="@+id/washerInUseB"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_red_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" />
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/lineB"
-                    android:layout_height="1dp"
-                    android:background="@android:color/black" >
-
-                    <View
+                    <TableRow
+                        android:id="@+id/washersA"
                         android:layout_width="fill_parent"
-                        android:layout_height="1dp"
-                        android:layout_span="2" />
-                </TableRow>
+                        android:layout_height="wrap_content" >
 
-                <TableRow
-                    android:id="@+id/dryersB"
+                        <TextView
+                            android:id="@+id/washIndicatorA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="4"
+                            android:background="@android:color/holo_blue_dark"
+                            android:gravity="center" >
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/washerAvailA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_green_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" >
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/washerCompleteA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_orange_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" >
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/washerInUseA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_red_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" >
+                        </TextView>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/lineA"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black" >
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
+                            android:layout_span="2" >
+                        </View>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/dryersA"
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp" >
+
+                        <TextView
+                            android:id="@+id/dryerIndicatorA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="4"
+                            android:background="@android:color/darker_gray"
+                            android:gravity="center" >
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/dryerAvailA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_green_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" >
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/dryerCompleteA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_orange_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" >
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/dryerInUseA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_red_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" >
+                        </TextView>
+                    </TableRow>
+                </TableLayout>
+
+                <TableLayout
+                    android:id="@+id/tableLayoutB"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
 
-                    <TextView
-                        android:id="@+id/dryerIndicatorB"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="4"
-                        android:background="@android:color/darker_gray"
-                        android:gravity="center" />
+                    <TableRow
+                        android:id="@+id/TableRow04"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp" >
 
-                    <TextView
-                        android:id="@+id/dryerAvailB"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_green_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" />
+                        <TextView
+                            android:id="@+id/nameB"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|center_horizontal"
+                            android:layout_weight="100"
+                            android:gravity="center"
+                            android:textSize="18sp" />
+                    </TableRow>
 
-                    <TextView
-                        android:id="@+id/dryerCompleteB"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_orange_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" />
+                    <TableRow
+                        android:id="@+id/washersB"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
 
-                    <TextView
-                        android:id="@+id/dryerInUseB"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="32"
-                        android:background="@android:color/holo_red_dark"
-                        android:gravity="center"
-                        android:text="@string/zero" />
-                </TableRow>
-            </TableLayout>
+                        <TextView
+                            android:id="@+id/washerIndicatorA"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="4"
+                            android:background="@android:color/holo_blue_dark"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/washerAvailB"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_green_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" />
+
+                        <TextView
+                            android:id="@+id/washerCompleteB"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_orange_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" />
+
+                        <TextView
+                            android:id="@+id/washerInUseB"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_red_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/lineB"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black" >
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
+                            android:layout_span="2" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/dryersB"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/dryerIndicatorB"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="4"
+                            android:background="@android:color/darker_gray"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/dryerAvailB"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_green_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" />
+
+                        <TextView
+                            android:id="@+id/dryerCompleteB"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_orange_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" />
+
+                        <TextView
+                            android:id="@+id/dryerInUseB"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="32"
+                            android:background="@android:color/holo_red_dark"
+                            android:gravity="center"
+                            android:text="@string/zero" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
         </ScrollView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 

@@ -17,7 +17,6 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -28,25 +27,18 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.TableLayout;
 
 public class List extends Activity implements OnRefreshListener {
 	private ProgressDialog progDialog;
 	private String building;
 	int selected;
 	boolean hasNext;
-	private TextView time, nameA, nameB;
+	private TextView time;
 
-	private TextView washerAvailA, washerCompleteA, washerInUseA, dryerAvailA,
-			dryerCompleteA, dryerInUseA;
-
-	private TextView washerAvailB, washerCompleteB, washerInUseB, dryerAvailB,
-			dryerCompleteB, dryerInUseB;
-
-	private TableRow washersA, dryersA, lineA;
-	private TableRow washersB, dryersB, lineB;
+	private Graph[] graphs;
 
 	boolean switcher;
 	int numComplete;
@@ -60,7 +52,7 @@ public class List extends Activity implements OnRefreshListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.blding_list);
-
+		
 		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
 		ActionBarPullToRefresh.from(this).listener(this)
 				.allChildrenArePullable().setup(mPullToRefreshLayout);
@@ -106,50 +98,57 @@ public class List extends Activity implements OnRefreshListener {
 	}
 
 	private void initializeTextViews() {
+		graphs = new Graph[2];
+		graphs[0] = new Graph();
+		graphs[1] = new Graph();
 		Typeface tf = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-BoldCondensed.ttf");
 		Typeface tf2 = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-Medium.ttf");
-		nameA = (TextView) findViewById(R.id.nameA);
-		nameA.setTypeface(tf);
 
-		washerAvailA = (TextView) findViewById(R.id.washerAvailA);
-		washerAvailA.setTypeface(tf);
-		washerCompleteA = (TextView) findViewById(R.id.washerCompleteA);
-		washerCompleteA.setTypeface(tf);
-		washerInUseA = (TextView) findViewById(R.id.washerInUseA);
-		washerInUseA.setTypeface(tf2);
-		washersA = (TableRow) findViewById(R.id.washersA);
+		graphs[0].name = (TextView) findViewById(R.id.nameA);
+		graphs[0].name.setTypeface(tf);
 
-		dryerAvailA = (TextView) findViewById(R.id.dryerAvailA);
-		dryerAvailA.setTypeface(tf);
-		dryerCompleteA = (TextView) findViewById(R.id.dryerCompleteA);
-		dryerCompleteA.setTypeface(tf);
-		dryerInUseA = (TextView) findViewById(R.id.dryerInUseA);
-		dryerInUseA.setTypeface(tf2);
-		dryersA = (TableRow) findViewById(R.id.dryersA);
+		graphs[0].washerAvail = (TextView) findViewById(R.id.washerAvailA);
+		graphs[0].washerAvail.setTypeface(tf);
+		graphs[0].washerComplete = (TextView) findViewById(R.id.washerCompleteA);
+		graphs[0].washerComplete.setTypeface(tf);
+		graphs[0].washerInUse = (TextView) findViewById(R.id.washerInUseA);
+		graphs[0].washerInUse.setTypeface(tf2);
+		graphs[0].washers = (TableRow) findViewById(R.id.washersA);
 
-		nameA = (TextView) findViewById(R.id.nameA);
-		nameA.setTypeface(tf);
+		graphs[0].dryerAvail = (TextView) findViewById(R.id.dryerAvailA);
+		graphs[0].dryerAvail.setTypeface(tf);
+		graphs[0].dryerComplete = (TextView) findViewById(R.id.dryerCompleteA);
+		graphs[0].dryerComplete.setTypeface(tf);
+		graphs[0].dryerInUse = (TextView) findViewById(R.id.dryerInUseA);
+		graphs[0].dryerInUse.setTypeface(tf2);
+		graphs[0].dryers = (TableRow) findViewById(R.id.dryersA);
 
-		washerAvailB = (TextView) findViewById(R.id.washerAvailB);
-		washerAvailB.setTypeface(tf);
-		washerCompleteB = (TextView) findViewById(R.id.washerCompleteB);
-		washerCompleteB.setTypeface(tf);
-		washerInUseB = (TextView) findViewById(R.id.washerInUseB);
-		washerInUseB.setTypeface(tf2);
-		washersB = (TableRow) findViewById(R.id.washersB);
+		graphs[0].line = (TableRow) findViewById(R.id.lineA);
+		graphs[0].tableLayout = (TableLayout) findViewById(R.id.tableLayoutA);
 
-		dryerAvailB = (TextView) findViewById(R.id.dryerAvailB);
-		dryerAvailB.setTypeface(tf);
-		dryerCompleteB = (TextView) findViewById(R.id.dryerCompleteB);
-		dryerCompleteB.setTypeface(tf);
-		dryerInUseB = (TextView) findViewById(R.id.dryerInUseB);
-		dryerInUseB.setTypeface(tf2);
-		dryersB = (TableRow) findViewById(R.id.dryersB);
+		graphs[1].name = (TextView) findViewById(R.id.nameB);
+		graphs[1].name.setTypeface(tf);
 
-		lineA = (TableRow) findViewById(R.id.lineA);
-		lineB = (TableRow) findViewById(R.id.lineB);
+		graphs[1].washerAvail = (TextView) findViewById(R.id.washerAvailB);
+		graphs[1].washerAvail.setTypeface(tf);
+		graphs[1].washerComplete = (TextView) findViewById(R.id.washerCompleteB);
+		graphs[1].washerComplete.setTypeface(tf);
+		graphs[1].washerInUse = (TextView) findViewById(R.id.washerInUseB);
+		graphs[1].washerInUse.setTypeface(tf2);
+		graphs[1].washers = (TableRow) findViewById(R.id.washersB);
+
+		graphs[1].dryerAvail = (TextView) findViewById(R.id.dryerAvailB);
+		graphs[1].dryerAvail.setTypeface(tf);
+		graphs[1].dryerComplete = (TextView) findViewById(R.id.dryerCompleteB);
+		graphs[1].dryerComplete.setTypeface(tf);
+		graphs[1].dryerInUse = (TextView) findViewById(R.id.dryerInUseB);
+		graphs[1].dryerInUse.setTypeface(tf2);
+		graphs[1].dryers = (TableRow) findViewById(R.id.dryersB);
+
+		graphs[1].line = (TableRow) findViewById(R.id.lineB);
+		graphs[1].tableLayout = (TableLayout) findViewById(R.id.tableLayoutB);
 
 		time = (TextView) findViewById(R.id.time);
 	}
@@ -281,67 +280,20 @@ public class List extends Activity implements OnRefreshListener {
 	}
 
 	public void postStatusCall(JSONArray json) {
-		for (int i = 0; i < 1/* json.length() */; i++) {
-			lineA.setVisibility(View.VISIBLE);
+		for (int i = 0; i < json.length(); i++) {
 			JSONObject object;
 			try {
 				object = json.getJSONObject(i);
-				nameA.setText(object.getString("name"));
-
-				int avail = object.getInt("washerAvail");
-				int total = object.getInt("washerTotal");
-				int inUse = object.getInt("washerInUse");
-				int complete = object.getInt("washerComplete");
-
-				float weightPerMachine;
-
-				if (total > 0) {
-					washersA.setVisibility(View.VISIBLE);
-					washerAvailA.setText(Integer.toString(avail));
-					washerInUseA.setText(Integer.toString(inUse));
-					washerCompleteA.setText(Integer.toString(complete));
-
-					weightPerMachine = 96 / total;
-
-					washerAvailA.setLayoutParams(new TableRow.LayoutParams(0,
-							heightInDp, weightPerMachine * avail));
-					washerInUseA.setLayoutParams(new TableRow.LayoutParams(0,
-							heightInDp, weightPerMachine * inUse));
-					washerCompleteA.setLayoutParams(new TableRow.LayoutParams(
-							0, heightInDp, weightPerMachine * complete));
-				} else {
-					washersA.setVisibility(View.INVISIBLE);
-					lineA.setVisibility(View.INVISIBLE);
-				}
-
-				avail = object.getInt("dryerAvail");
-				total = object.getInt("dryerTotal");
-				inUse = object.getInt("dryerInUse");
-				complete = object.getInt("dryerComplete");
-
-				if (total > 0) {
-					dryersA.setVisibility(View.VISIBLE);
-					dryerAvailA.setText(Integer.toString(avail));
-					dryerInUseA.setText(Integer.toString(inUse));
-					dryerCompleteA.setText(Integer.toString(complete));
-
-					weightPerMachine = 96 / total;
-					dryerAvailA.setLayoutParams(new TableRow.LayoutParams(0,
-							heightInDp, weightPerMachine * avail));
-					dryerInUseA.setLayoutParams(new TableRow.LayoutParams(0,
-							heightInDp, weightPerMachine * inUse));
-					dryerCompleteA.setLayoutParams(new TableRow.LayoutParams(0,
-							heightInDp, weightPerMachine * complete));
-				} else {
-					dryersA.setVisibility(View.INVISIBLE);
-					lineA.setVisibility(View.INVISIBLE);
-				}
+				graphs[i].setGraphVisible();
+				graphs[i].setValues(object, heightInDp);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			setTime();
+		}
+		
+		if (json.length() == 1){
+			graphs[1].setGraphInvisible();
 		}
 	}
 
