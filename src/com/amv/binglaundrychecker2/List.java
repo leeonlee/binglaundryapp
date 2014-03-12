@@ -365,6 +365,7 @@ public class List extends Activity implements OnRefreshListener {
 		});
 		final AlertDialog alert = builder.create();
 		alert.show();
+		progDialog.dismiss();
 	}
 
 	@Override
