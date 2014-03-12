@@ -43,9 +43,9 @@
                     android:layout_height="wrap_content" >
 
                     <TextView
-                        android:id="@+id/washIndicator"
+                        android:id="@+id/washIndicatorA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="4"
                         android:background="@android:color/holo_blue_dark"
                         android:gravity="center" >
@@ -54,7 +54,7 @@
                     <TextView
                         android:id="@+id/washerAvailA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_green_dark"
                         android:gravity="center"
@@ -64,7 +64,7 @@
                     <TextView
                         android:id="@+id/washerCompleteA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_orange_dark"
                         android:gravity="center"
@@ -74,7 +74,7 @@
                     <TextView
                         android:id="@+id/washerInUseA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_red_dark"
                         android:gravity="center"
@@ -97,22 +97,21 @@
                 <TableRow
                     android:id="@+id/dryersA"
                     android:layout_width="fill_parent"
-                    android:layout_height="50sp" >
+                    android:layout_height="50dp" >
 
                     <TextView
-                        android:id="@+id/dryerIndicator"
+                        android:id="@+id/dryerIndicatorA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="4"
                         android:background="@android:color/darker_gray"
-                        android:gravity="center"
-                        android:textSize="12sp" >
+                        android:gravity="center" >
                     </TextView>
 
                     <TextView
                         android:id="@+id/dryerAvailA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_green_dark"
                         android:gravity="center"
@@ -122,7 +121,7 @@
                     <TextView
                         android:id="@+id/dryerCompleteA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_orange_dark"
                         android:gravity="center"
@@ -132,7 +131,7 @@
                     <TextView
                         android:id="@+id/dryerInUseA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_red_dark"
                         android:gravity="center"
@@ -147,7 +146,7 @@
                     android:layout_marginTop="70sp" >
 
                     <TextView
-                        android:id="@+id/TextView01"
+                        android:id="@+id/nameB"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|center_horizontal"
                         android:layout_weight="100"
@@ -161,34 +160,35 @@
                     android:layout_height="wrap_content" >
 
                     <TextView
+                        android:id="@+id/washerIndicatorA"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="4"
                         android:background="@android:color/holo_blue_dark"
                         android:gravity="center" />
 
                     <TextView
-                        android:id="@+id/TextView06"
+                        android:id="@+id/washerAvailB"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_green_dark"
                         android:gravity="center"
                         android:text="@string/zero" />
 
                     <TextView
-                        android:id="@+id/TextView04"
+                        android:id="@+id/washerCompleteB"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_orange_dark"
                         android:gravity="center"
                         android:text="@string/zero" />
 
                     <TextView
-                        android:id="@+id/TextView09"
+                        android:id="@+id/washerInUseB"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_red_dark"
                         android:gravity="center"
@@ -196,7 +196,7 @@
                 </TableRow>
 
                 <TableRow
-                    android:id="@+id/TableRow03"
+                    android:id="@+id/lineB"
                     android:layout_height="1dp"
                     android:background="@android:color/black" >
 
@@ -212,35 +212,35 @@
                     android:layout_height="wrap_content" >
 
                     <TextView
+                        android:id="@+id/dryerIndicatorB"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="4"
                         android:background="@android:color/darker_gray"
-                        android:gravity="center"
-                        android:textSize="12sp" />
+                        android:gravity="center" />
 
                     <TextView
-                        android:id="@+id/TextView02"
+                        android:id="@+id/dryerAvailB"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_green_dark"
                         android:gravity="center"
                         android:text="@string/zero" />
 
                     <TextView
-                        android:id="@+id/TextView03"
+                        android:id="@+id/dryerCompleteB"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_orange_dark"
                         android:gravity="center"
                         android:text="@string/zero" />
 
                     <TextView
-                        android:id="@+id/TextView05"
+                        android:id="@+id/dryerInUseB"
                         android:layout_width="0dp"
-                        android:layout_height="50sp"
+                        android:layout_height="50dp"
                         android:layout_weight="32"
                         android:background="@android:color/holo_red_dark"
                         android:gravity="center"

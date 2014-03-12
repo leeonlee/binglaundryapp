@@ -17,16 +17,17 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ public class List extends Activity implements OnRefreshListener {
 	boolean hasNext;
 	private TextView time, nameA, nameB;
 
-	private Button washerAvailA, washerCompleteA, washerInUseA, dryerAvailA,
+	private TextView washerAvailA, washerCompleteA, washerInUseA, dryerAvailA,
 			dryerCompleteA, dryerInUseA;
 
 	private Button washerAvailB, washerCompleteB, washerInUseB, dryerAvailB,
@@ -108,19 +109,19 @@ public class List extends Activity implements OnRefreshListener {
 		nameA = (TextView) findViewById(R.id.nameA);
 		nameA.setTypeface(tf);
 
-		washerAvailA = (Button) findViewById(R.id.washerAvailA);
+		washerAvailA = (TextView) findViewById(R.id.washerAvailA);
 		washerAvailA.setTypeface(tf);
-		washerCompleteA = (Button) findViewById(R.id.washerCompleteA);
+		washerCompleteA = (TextView) findViewById(R.id.washerCompleteA);
 		washerCompleteA.setTypeface(tf);
-		washerInUseA = (Button) findViewById(R.id.washerInUseA);
+		washerInUseA = (TextView) findViewById(R.id.washerInUseA);
 		washerInUseA.setTypeface(tf2);
 		washersA = (TableRow) findViewById(R.id.washersA);
 
-		dryerAvailA = (Button) findViewById(R.id.dryerAvailA);
+		dryerAvailA = (TextView) findViewById(R.id.dryerAvailA);
 		dryerAvailA.setTypeface(tf);
-		dryerCompleteA = (Button) findViewById(R.id.dryerCompleteA);
+		dryerCompleteA = (TextView) findViewById(R.id.dryerCompleteA);
 		dryerCompleteA.setTypeface(tf);
-		dryerInUseA = (Button) findViewById(R.id.dryerInUseA);
+		dryerInUseA = (TextView) findViewById(R.id.dryerInUseA);
 		dryerInUseA.setTypeface(tf2);
 		dryersA = (TableRow) findViewById(R.id.dryersA);
 
@@ -270,6 +271,9 @@ public class List extends Activity implements OnRefreshListener {
 
 				float weightPerMachine;
 
+				int height = (int) TypedValue.applyDimension(
+						TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
+								.getDisplayMetrics());
 				if (total > 0) {
 					washersA.setVisibility(View.VISIBLE);
 					washerAvailA.setText(Integer.toString(avail));
@@ -278,17 +282,12 @@ public class List extends Activity implements OnRefreshListener {
 
 					weightPerMachine = 96 / total;
 
-					washerAvailA
-							.setLayoutParams(new TableRow.LayoutParams(0,
-									LayoutParams.WRAP_CONTENT, weightPerMachine
-											* avail));
-					washerInUseA
-							.setLayoutParams(new TableRow.LayoutParams(0,
-									LayoutParams.WRAP_CONTENT, weightPerMachine
-											* inUse));
+					washerAvailA.setLayoutParams(new TableRow.LayoutParams(0,
+							height, weightPerMachine * avail));
+					washerInUseA.setLayoutParams(new TableRow.LayoutParams(0,
+							height, weightPerMachine * inUse));
 					washerCompleteA.setLayoutParams(new TableRow.LayoutParams(
-							0, LayoutParams.WRAP_CONTENT, weightPerMachine
-									* complete));
+							0, height, weightPerMachine * complete));
 				} else {
 					washersA.setVisibility(View.INVISIBLE);
 					lineA.setVisibility(View.INVISIBLE);
@@ -306,17 +305,12 @@ public class List extends Activity implements OnRefreshListener {
 					dryerCompleteA.setText(Integer.toString(complete));
 
 					weightPerMachine = 96 / total;
-					dryerAvailA
-							.setLayoutParams(new TableRow.LayoutParams(0,
-									LayoutParams.WRAP_CONTENT, weightPerMachine
-											* avail));
-					dryerInUseA
-							.setLayoutParams(new TableRow.LayoutParams(0,
-									LayoutParams.WRAP_CONTENT, weightPerMachine
-											* inUse));
+					dryerAvailA.setLayoutParams(new TableRow.LayoutParams(0,
+							height, weightPerMachine * avail));
+					dryerInUseA.setLayoutParams(new TableRow.LayoutParams(0,
+							height, weightPerMachine * inUse));
 					dryerCompleteA.setLayoutParams(new TableRow.LayoutParams(0,
-							LayoutParams.WRAP_CONTENT, weightPerMachine
-									* complete));
+							height, weightPerMachine * complete));
 				} else {
 					dryersA.setVisibility(View.INVISIBLE);
 					lineA.setVisibility(View.INVISIBLE);
