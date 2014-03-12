@@ -36,12 +36,16 @@ public class List extends Activity implements OnRefreshListener {
 	private String building;
 	int selected;
 	boolean hasNext;
-	private TextView time, nameA;
+	private TextView time, nameA, nameB;
 
 	private Button washerAvailA, washerCompleteA, washerInUseA, dryerAvailA,
 			dryerCompleteA, dryerInUseA;
 
+	private Button washerAvailB, washerCompleteB, washerInUseB, dryerAvailB,
+			dryerCompleteB, dryerInUseB;
+
 	private TableRow washersA, dryersA, lineA;
+	private TableRow washersB, dryersB, lineB;
 
 	boolean switcher;
 	int numComplete;
