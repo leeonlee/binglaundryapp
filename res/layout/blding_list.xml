@@ -23,6 +23,52 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="20dp" >
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/availColor"
+                        android:layout_width="12sp"
+                        android:layout_height="12sp"
+                        android:background="@android:color/holo_green_dark"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/availDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Available"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/completeColor"
+                        android:layout_width="12sp"
+                        android:layout_height="12sp"
+                        android:background="@android:color/holo_orange_dark"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/completeDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Completed" />
+
+                    <TextView
+                        android:id="@+id/inUseColor"
+                        android:layout_width="12sp"
+                        android:layout_height="12sp"
+                        android:background="@android:color/holo_red_dark"
+                        android:text=""/>
+
+                    <TextView
+                        android:id="@+id/inUseDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="In Use" />
+                </LinearLayout>
+
                 <TableRow
                     android:id="@+id/tableRow1"
                     android:layout_width="wrap_content"
@@ -228,7 +274,6 @@
                         android:text="@string/zero" />
                 </TableRow>
             </TableLayout>
-
         </ScrollView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
