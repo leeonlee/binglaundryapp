@@ -79,7 +79,7 @@
                         <TextView
                             android:id="@+id/washerInUseA"
                             android:layout_width="0dp"
-                            android:layout_height="50dp"
+                            android:layout_height="fill_parent"
                             android:layout_weight="32"
                             android:background="@android:color/holo_red_dark"
                             android:gravity="center"

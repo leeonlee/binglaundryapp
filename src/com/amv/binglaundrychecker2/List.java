@@ -27,9 +27,9 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.TableLayout;
 
 public class List extends Activity implements OnRefreshListener {
 	private ProgressDialog progDialog;
@@ -103,8 +103,8 @@ public class List extends Activity implements OnRefreshListener {
 
 	private void initializeTextViews() {
 		graphs = new Graph[2];
-		graphs[0] = new Graph();
-		graphs[1] = new Graph();
+		graphs[0] = new Graph(getApplicationContext());
+		graphs[1] = new Graph(getApplicationContext());
 		Typeface tf = Typeface.createFromAsset(getAssets(),
 				"fonts/Roboto-BoldCondensed.ttf");
 		Typeface tf2 = Typeface.createFromAsset(getAssets(),
@@ -153,6 +153,9 @@ public class List extends Activity implements OnRefreshListener {
 
 		graphs[1].line = (TableRow) findViewById(R.id.lineB);
 		graphs[1].tableLayout = (TableLayout) findViewById(R.id.tableLayoutB);
+
+		graphs[0].setClickListeners();
+		graphs[1].setClickListeners();
 
 		time = (TextView) findViewById(R.id.time);
 	}
@@ -334,7 +337,7 @@ public class List extends Activity implements OnRefreshListener {
 			public void onClick(DialogInterface dialog, int which) {
 				if (selected != -1) {
 					building = buildings[selected].replace(" ", "_");
-					new CallAPI().execute(statusURL + building, "status");
+					getStatus(building);
 					SharedPreferences.Editor editor = getPreferences(
 							MODE_PRIVATE).edit();
 					editor.putString("building", building);
