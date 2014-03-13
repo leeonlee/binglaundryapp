@@ -10,6 +10,13 @@ import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -21,9 +28,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-public class MainActivity extends FragmentActivity implements
-		NewViewFragment.OnRefreshListener {
+public class MainActivity extends FragmentActivity implements OnRefreshListener {
 	private ProgressDialog progDialog;
 	private ActionBar actionBar;
 	private String building;
@@ -33,15 +40,21 @@ public class MainActivity extends FragmentActivity implements
 	private String communityURL = "http://binglaundry.herokuapp.com/communities";
 	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
 
+	private PullToRefreshLayout mPullToRefreshLayout;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
+
+		ActionBarPullToRefresh.from(this).allChildrenArePullable()
+				.listener(this).setup(mPullToRefreshLayout);
+
 		actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		setTitle("Laundry");
 
 		ActionBar.Tab tab1 = actionBar.newTab().setText("New view");
 		ActionBar.Tab tab2 = actionBar.newTab().setText("Old View");
@@ -67,7 +80,6 @@ public class MainActivity extends FragmentActivity implements
 			getActionBar().setSubtitle("Laundry Status");
 			getStatus(building);
 		}
-
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,7 +94,6 @@ public class MainActivity extends FragmentActivity implements
 			setCommunity();
 			break;
 		}
-
 		return true;
 	}
 
@@ -91,7 +102,6 @@ public class MainActivity extends FragmentActivity implements
 		new CallAPI().execute(communityURL, "community");
 	}
 
-	@Override
 	public void setBuilding(String community) {
 		callProgDialog();
 		new CallAPI().execute(buildingURL + community, "building");
@@ -99,10 +109,7 @@ public class MainActivity extends FragmentActivity implements
 
 	// The three types are used for- params, progress, result
 	private class CallAPI extends AsyncTask<String, String, String[]> {
-
-		/*
-		 * Get JSON response from url supplied
-		 */
+		// Get JSON response from url supplied
 		@Override
 		protected String[] doInBackground(String... params) {
 			String urlString = params[0];
@@ -157,6 +164,9 @@ public class MainActivity extends FragmentActivity implements
 				.findFragmentByTag("FRAGMENT");
 
 		fragment.update(json);
+		if (mPullToRefreshLayout.isRefreshing()) {
+			mPullToRefreshLayout.setRefreshComplete();
+		}
 	}
 
 	private void postCommunityCall(final JSONArray json) {
@@ -238,6 +248,7 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	public void getStatus(String building) {
+		mPullToRefreshLayout.setRefreshing(true);
 		new CallAPI().execute(statusURL + building, "status");
 	}
 
@@ -258,5 +269,10 @@ public class MainActivity extends FragmentActivity implements
 			string = new String(contents, 0, bytesRead);
 		}
 		return string;
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		getStatus(building);
 	}
 }

@@ -13,8 +13,6 @@ public class MyTabListener implements ActionBar.TabListener{
 
 	@Override
 	public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -26,6 +24,4 @@ public class MyTabListener implements ActionBar.TabListener{
 	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
 		ft.remove(fragment);
 	}
-
-
 }

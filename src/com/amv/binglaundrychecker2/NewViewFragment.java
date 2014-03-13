@@ -4,9 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.TypedValue;
@@ -31,17 +29,6 @@ public class NewViewFragment extends Fragment{
 
 	public interface OnRefreshListener {
 		public void setBuilding(String building);
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			mCallBack = (OnRefreshListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnHeadlineSelectedListener");
-		}
 	}
 
 	@Override
