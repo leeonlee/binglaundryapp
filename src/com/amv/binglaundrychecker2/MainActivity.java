@@ -35,7 +35,6 @@ public class MainActivity extends FragmentActivity implements
 	private ActionBar actionBar;
 	private String building;
 	int selected;
-	NewViewFragment frag;
 	private String statusURL = "http://binglaundry.herokuapp.com/status/";
 	private String communityURL = "http://binglaundry.herokuapp.com/communities";
 	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
@@ -46,6 +45,24 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		setup();
+
+		// load saved configurations
+		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+
+		building = prefs.getString("building", null);
+		if (building == null) {
+			getActionBar().setTitle("Laundry Status");
+
+		} else {
+			getActionBar().setTitle(building.replace("_", " "));
+			getActionBar().setSubtitle("Laundry Status");
+			getStatus();
+		}
+	}
+
+	private void setup() {
 
 		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
 
@@ -67,18 +84,6 @@ public class MainActivity extends FragmentActivity implements
 
 		actionBar.addTab(tab1);
 		actionBar.addTab(tab2);
-
-		// load saved configurations
-		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-		building = prefs.getString("building", null);
-		if (building == null) {
-			getActionBar().setTitle("Laundry Status");
-
-		} else {
-			getActionBar().setTitle(building.replace("_", " "));
-			getActionBar().setSubtitle("Laundry Status");
-			getStatus();
-		}
 	}
 
 	private void callProgDialog() {
@@ -99,8 +104,10 @@ public class MainActivity extends FragmentActivity implements
 
 	public void getStatus() {
 		if (building != null || building != "") {
+			// remove all spaces
+			String temp = building.replace(" ", "_");
 			mPullToRefreshLayout.setRefreshing(true);
-			new CallAPI().execute(statusURL + building, "status");
+			new CallAPI().execute(statusURL + temp, "status");
 		}
 	}
 

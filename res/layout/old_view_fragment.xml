@@ -8,8 +8,8 @@
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="fill_parent"
-        android:paddingTop="20dp"
         android:layout_height="fill_parent"
+        android:paddingTop="20dp"
         android:stretchColumns="0,1" >
 
         <TableRow
@@ -82,14 +82,24 @@
         </TableRow>
     </TableLayout>
 
-    <TextView
-        android:id="@+id/time"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:textSize="12sp"
         android:layout_centerHorizontal="true"
-        android:text="Hold the screen to refresh" />
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pulldown" />
+    </LinearLayout>
 
 </RelativeLayout>
