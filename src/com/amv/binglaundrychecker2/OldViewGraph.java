@@ -28,7 +28,7 @@ public class OldViewGraph {
 
 			if (inUse != 0) {
 				timeArray = object.getJSONArray("washerTimes");
-				wash += getEarliest(timeArray);
+				wash += "\nEarliest: " + getEarliest(timeArray);
 			}
 
 			statusWash.setText(wash);
@@ -43,7 +43,7 @@ public class OldViewGraph {
 
 			if (inUse != 0) {
 				timeArray = object.getJSONArray("dryerTimes");
-				dry += getEarliest(timeArray);
+				dry += "\nEarliest: " + getEarliest(timeArray);
 			}
 
 			statusDry.setText(dry);

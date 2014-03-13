@@ -4,42 +4,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class OldViewFragment extends Fragment implements UpdateInterface {
+public class OldViewFragment extends ViewFragment {
 	private TextView time;
 
-	OldViewChangeListener oldViewChangeListener;
-
 	private OldViewGraph[] graphs;
+
+	public void onStart() {
+		super.onStart();
+		viewChangeListener.update();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View myView = inflater.inflate(R.layout.old_view_fragment, container, false);
+		View myView = inflater.inflate(R.layout.old_view_fragment, container,
+				false);
 		initializeTextViews(myView);
 		return myView;
-	}
-
-	public interface OldViewChangeListener {
-		public void updateOldView();
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			oldViewChangeListener = (OldViewChangeListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OldViewChangeListener");
-		}
 	}
 
 	private void initializeTextViews(View v) {

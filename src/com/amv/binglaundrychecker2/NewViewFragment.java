@@ -4,8 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -18,29 +16,13 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-public class NewViewFragment extends Fragment implements UpdateInterface {
+public class NewViewFragment extends ViewFragment {
 	int selected;
 	private TextView time;
 
 	private NewViewGraph[] graphs;
 
 	private int heightInDp;
-	NewViewChangeListener newChangeListener;
-
-	public interface NewViewChangeListener {
-		public void updateNewView();
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			newChangeListener = (NewViewChangeListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement NewViewChanegListener");
-		}
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +34,7 @@ public class NewViewFragment extends Fragment implements UpdateInterface {
 
 	public void onStart() {
 		super.onStart();
-		newChangeListener.updateNewView();
+		viewChangeListener.update();
 		heightInDp = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
 						.getDisplayMetrics());

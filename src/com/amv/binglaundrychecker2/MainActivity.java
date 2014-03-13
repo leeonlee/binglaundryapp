@@ -27,11 +27,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.amv.binglaundrychecker2.NewViewFragment.NewViewChangeListener;
-import com.amv.binglaundrychecker2.OldViewFragment.OldViewChangeListener;
+import com.amv.binglaundrychecker2.ViewFragment.ViewChangeListener;
 
 public class MainActivity extends FragmentActivity implements
-		OnRefreshListener, NewViewChangeListener, OldViewChangeListener {
+		OnRefreshListener, ViewChangeListener {
 	private ProgressDialog progDialog;
 	private ActionBar actionBar;
 	private String building;
@@ -235,7 +234,7 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	private void postStatusCall(final JSONArray json) {
-		NewViewFragment fragment = (NewViewFragment) getFragmentManager()
+		ViewFragment fragment = (ViewFragment) getFragmentManager()
 				.findFragmentByTag("FRAGMENT");
 
 		fragment.update(json, getTimeString());
@@ -285,12 +284,8 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void updateNewView() {
+	public void update() {
 		getStatus();
 	}
 
-	@Override
-	public void updateOldView() {
-		getStatus();
-	}
 }
