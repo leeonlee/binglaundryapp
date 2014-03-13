@@ -152,12 +152,14 @@ public class MainActivity extends FragmentActivity implements
 				e.printStackTrace();
 			}
 
-			if (result[1] == "community")
-				postCommunityCall(json);
-			else if (result[1] == "status")
-				postStatusCall(json);
-			else if (result[1] == "building") {
-				postBuildingCall(json);
+			if (json != null) {
+				if (result[1] == "community")
+					postCommunityCall(json);
+				else if (result[1] == "status")
+					postStatusCall(json);
+				else if (result[1] == "building") {
+					postBuildingCall(json);
+				}
 			}
 		}
 	}
@@ -221,12 +223,12 @@ public class MainActivity extends FragmentActivity implements
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (selected != -1) {
+					building = buildings[selected];
 					SharedPreferences.Editor editor = getPreferences(
 							MODE_PRIVATE).edit();
 					editor.putString("building", building);
 					editor.commit();
 
-					building = buildings[selected].replace(" ", "_");
 					dialog.dismiss();
 
 					getActionBar().setTitle(building);
