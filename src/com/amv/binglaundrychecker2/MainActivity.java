@@ -10,8 +10,6 @@ import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.amv.binglaundrychecker2.NewViewFragment.OnViewChangeListener;
-
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -24,12 +22,16 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.amv.binglaundrychecker2.NewViewFragment.NewViewChangeListener;
+import com.amv.binglaundrychecker2.OldViewFragment.OldViewChangeListener;
+
 public class MainActivity extends FragmentActivity implements
-		OnRefreshListener, OnViewChangeListener {
+		OnRefreshListener, NewViewChangeListener, OldViewChangeListener {
 	private ProgressDialog progDialog;
 	private ActionBar actionBar;
 	private String building;
@@ -236,10 +238,17 @@ public class MainActivity extends FragmentActivity implements
 		NewViewFragment fragment = (NewViewFragment) getFragmentManager()
 				.findFragmentByTag("FRAGMENT");
 
-		fragment.update(json);
+		fragment.update(json, getTimeString());
 		if (mPullToRefreshLayout.isRefreshing()) {
 			mPullToRefreshLayout.setRefreshComplete();
 		}
+	}
+
+	private String getTimeString() {
+		Time now = new Time();
+		now.setToNow();
+		String hours = now.format("%l:%M");
+		return "Status as of " + hours;
 	}
 
 	/*
@@ -260,12 +269,6 @@ public class MainActivity extends FragmentActivity implements
 		getStatus();
 	}
 
-	// Called every time a new view is made
-	@Override
-	public void updateView() {
-		getStatus();
-	}
-
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -279,5 +282,15 @@ public class MainActivity extends FragmentActivity implements
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public void updateNewView() {
+		getStatus();
+	}
+
+	@Override
+	public void updateOldView() {
+		getStatus();
 	}
 }

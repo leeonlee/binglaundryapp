@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,27 +18,27 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-public class NewViewFragment extends Fragment{
+public class NewViewFragment extends Fragment implements UpdateInterface {
 	int selected;
 	private TextView time;
 
-	private Graph[] graphs;
+	private NewViewGraph[] graphs;
 
 	private int heightInDp;
-	OnViewChangeListener viewChangeListener;
+	NewViewChangeListener newChangeListener;
 
-	public interface OnViewChangeListener {
-		public void updateView();
+	public interface NewViewChangeListener {
+		public void updateNewView();
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			viewChangeListener = (OnViewChangeListener) activity;
+			newChangeListener = (NewViewChangeListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement OnHeadlineSelectedListener");
+					+ " must implement NewViewChanegListener");
 		}
 	}
 
@@ -53,7 +52,7 @@ public class NewViewFragment extends Fragment{
 
 	public void onStart() {
 		super.onStart();
-		viewChangeListener.updateView();
+		newChangeListener.updateNewView();
 		heightInDp = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
 						.getDisplayMetrics());
@@ -65,10 +64,10 @@ public class NewViewFragment extends Fragment{
 	}
 
 	private void initializeTextViews(View view) {
-		graphs = new Graph[2];
+		graphs = new NewViewGraph[2];
 
-		graphs[0] = new Graph(getActivity());
-		graphs[1] = new Graph(getActivity());
+		graphs[0] = new NewViewGraph(getActivity());
+		graphs[1] = new NewViewGraph(getActivity());
 
 		graphs[0].name = (TextView) view.findViewById(R.id.nameA);
 
@@ -115,32 +114,25 @@ public class NewViewFragment extends Fragment{
 		time = (TextView) view.findViewById(R.id.time);
 	}
 
-	public void update(JSONArray json) {
-		if (json == null){
+	public void update(JSONArray json, String timeString) {
+		if (json == null) {
 			return;
 		}
-			for (int i = 0; i < json.length(); i++) {
-				JSONObject object;
-				try {
-					object = json.getJSONObject(i);
-					graphs[i].setGraphVisible();
-					graphs[i].setValues(object, heightInDp);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				setTime();
+		for (int i = 0; i < json.length(); i++) {
+			JSONObject object;
+			try {
+				object = json.getJSONObject(i);
+				graphs[i].setGraphVisible();
+				graphs[i].setValues(object, heightInDp);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			time.setText(timeString);
 		}
 
 		if (json.length() == 1) {
 			graphs[1].setGraphInvisible();
 		}
-	}
-
-	private void setTime() {
-		Time now = new Time();
-		now.setToNow();
-		String hours = now.format("%l:%M");
-		time.setText("Status as of " + hours);
 	}
 
 }

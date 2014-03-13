@@ -13,7 +13,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-class Graph {
+class NewViewGraph {
 	int TOTAL_WEIGHT = 96;
 	public TextView washerAvail, washerComplete, washerInUse, dryerAvail,
 			dryerComplete, dryerInUse, name;
@@ -24,7 +24,7 @@ class Graph {
 
 	public Context context;
 
-	public Graph(Context context) {
+	public NewViewGraph(Context context) {
 		this.context = context;
 	}
 
