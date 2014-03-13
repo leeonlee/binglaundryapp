@@ -149,12 +149,12 @@ class Graph {
 	}
 
 	public void setWashersInvisible() {
-		washers.setVisibility(View.INVISIBLE);
+		washers.setVisibility(View.GONE);
 		setLineInvisible();
 	}
 
 	public void setDryersInvisible() {
-		dryers.setVisibility(View.INVISIBLE);
+		dryers.setVisibility(View.GONE);
 		setLineInvisible();
 	}
 
@@ -163,7 +163,7 @@ class Graph {
 	}
 
 	public void setDryerBarInvisible() {
-		dryers.setVisibility(View.INVISIBLE);
+		dryers.setVisibility(View.GONE);
 		setLineInvisible();
 	}
 
@@ -172,7 +172,7 @@ class Graph {
 	}
 
 	public void setLineInvisible() {
-		line.setVisibility(View.INVISIBLE);
+		line.setVisibility(View.GONE);
 	}
 
 	public void setLineVisible() {
@@ -184,7 +184,7 @@ class Graph {
 	}
 
 	public void setGraphInvisible() {
-		tableLayout.setVisibility(View.INVISIBLE);
+		tableLayout.setVisibility(View.GONE);
 	}
 
 	public void setGraphVisible() {
