@@ -21,16 +21,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 public class NewViewFragment extends Fragment{
-	private ProgressDialog progDialog;
-	private String building;
 	int selected;
 	private TextView time;
 
 	private Graph[] graphs;
-
-	private String statusURL = "http://binglaundry.herokuapp.com/status/";
-	private String communityURL = "http://binglaundry.herokuapp.com/communities";
-	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
 
 	private int heightInDp;
 	OnRefreshListener mCallBack;

@@ -65,6 +65,7 @@ public class MainActivity extends FragmentActivity implements
 		} else {
 			getActionBar().setTitle(building.replace("_", " "));
 			getActionBar().setSubtitle("Laundry Status");
+			getStatus(building);
 		}
 
 	}
