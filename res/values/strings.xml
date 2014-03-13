@@ -7,6 +7,7 @@
     <color name="ExpandGroupBackground">#FF7C7C7C</color>
     <string name="zero">0</string>
     <string name="pulldown">Pull down screen to refresh</string>
+    <string name="touch">Touch red bars to see times remaining</string>
     <string name="avail">Available </string>
     <string name="inUse">In Use </string>
     <string name="complete">Completed </string>

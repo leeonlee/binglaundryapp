@@ -272,7 +272,7 @@ public class List extends Activity implements OnRefreshListener {
 		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Select Community");
-		builder.setCancelable(false);
+		builder.setCancelable(true);
 		selected = -1;
 		builder.setSingleChoiceItems(communities, selected,
 				new DialogInterface.OnClickListener() {
@@ -332,7 +332,7 @@ public class List extends Activity implements OnRefreshListener {
 		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Select Building");
-		builder.setCancelable(false);
+		builder.setCancelable(true);
 		selected = -1;
 		builder.setSingleChoiceItems(buildings, selected,
 				new DialogInterface.OnClickListener() {
