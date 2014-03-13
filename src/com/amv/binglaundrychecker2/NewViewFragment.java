@@ -64,13 +64,6 @@ public class NewViewFragment extends Fragment{
 		adView.loadAd(adRequest);
 	}
 
-
-	public void setText() {
-		TextView time = (TextView) getView()
-				.findViewById(R.id.dryerDescription);
-		time.setText("wtf guys");
-	}
-
 	private void initializeTextViews(View view) {
 		graphs = new Graph[2];
 
