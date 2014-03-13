@@ -70,7 +70,7 @@ public class Laundry extends Activity implements OnRefreshListener {
 			getActionBar().setTitle("Laundry Status");
 			setCommunity();
 		} else {
-			getActionBar().setTitle(building);
+			getActionBar().setTitle(building.replace("_", " "));
 			getActionBar().setSubtitle("Laundry Status");
 			getStatus(building);
 		}
@@ -324,14 +324,14 @@ public class Laundry extends Activity implements OnRefreshListener {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (selected != -1) {
-					building = buildings[selected].replace(" ", "_");
-					getStatus(building);
-
 					// Save the building to settings
 					SharedPreferences.Editor editor = getPreferences(
 							MODE_PRIVATE).edit();
 					editor.putString("building", building);
 					editor.commit();
+
+					building = buildings[selected].replace(" ", "_");
+					getStatus(building);
 
 					getActionBar().setTitle(building);
 					getActionBar().setSubtitle("Laundry Status");
