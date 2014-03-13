@@ -28,7 +28,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends FragmentActivity implements OnRefreshListener, OnViewChangeListener {
+public class MainActivity extends FragmentActivity implements
+		OnRefreshListener, OnViewChangeListener {
 	private ProgressDialog progDialog;
 	private ActionBar actionBar;
 	private String building;
@@ -68,7 +69,6 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener,
 
 		// load saved configurations
 		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-		// if building pref is not there then set building to null
 		building = prefs.getString("building", null);
 		if (building == null) {
 			getActionBar().setTitle("Laundry Status");
@@ -76,23 +76,14 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener,
 		} else {
 			getActionBar().setTitle(building.replace("_", " "));
 			getActionBar().setSubtitle("Laundry Status");
-			//getStatus();
+			getStatus();
 		}
 	}
 
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_change:
-			setCommunity();
-			break;
-		}
-		return true;
+	private void callProgDialog() {
+		progDialog = new ProgressDialog(this);
+		progDialog.setMessage("Loading..");
+		progDialog.show();
 	}
 
 	private void setCommunity() {
@@ -103,6 +94,13 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener,
 	public void setBuilding(String community) {
 		callProgDialog();
 		new CallAPI().execute(buildingURL + community, "building");
+	}
+
+	public void getStatus() {
+		if (building != null || building != "") {
+			mPullToRefreshLayout.setRefreshing(true);
+			new CallAPI().execute(statusURL + building, "status");
+		}
 	}
 
 	// The three types are used for- params, progress, result
@@ -153,17 +151,6 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener,
 			else if (result[1] == "building") {
 				postBuildingCall(json);
 			}
-
-		}
-	}
-
-	private void postStatusCall(final JSONArray json) {
-		NewViewFragment fragment = (NewViewFragment) getFragmentManager()
-				.findFragmentByTag("FRAGMENT");
-
-		fragment.update(json);
-		if (mPullToRefreshLayout.isRefreshing()) {
-			mPullToRefreshLayout.setRefreshComplete();
 		}
 	}
 
@@ -245,15 +232,14 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener,
 		progDialog.dismiss();
 	}
 
-	public void getStatus() {
-		mPullToRefreshLayout.setRefreshing(true);
-		new CallAPI().execute(statusURL + building, "status");
-	}
+	private void postStatusCall(final JSONArray json) {
+		NewViewFragment fragment = (NewViewFragment) getFragmentManager()
+				.findFragmentByTag("FRAGMENT");
 
-	private void callProgDialog() {
-		progDialog = new ProgressDialog(this);
-		progDialog.setMessage("Loading..");
-		progDialog.show();
+		fragment.update(json);
+		if (mPullToRefreshLayout.isRefreshing()) {
+			mPullToRefreshLayout.setRefreshComplete();
+		}
 	}
 
 	/*
@@ -274,8 +260,24 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener,
 		getStatus();
 	}
 
+	// Called every time a new view is made
 	@Override
 	public void updateView() {
 		getStatus();
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_change:
+			setCommunity();
+			break;
+		}
+		return true;
 	}
 }
