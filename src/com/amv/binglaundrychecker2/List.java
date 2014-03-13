@@ -31,21 +31,23 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 public class List extends Activity implements OnRefreshListener {
 	private ProgressDialog progDialog;
 	private String building;
 	int selected;
-	boolean hasNext;
 	private TextView time;
 
 	private Graph[] graphs;
 
-	boolean switcher;
-	int numComplete;
 	private String statusURL = "http://binglaundry.herokuapp.com/status/";
 	private String communityURL = "http://binglaundry.herokuapp.com/communities";
 	private String buildingURL = "http://binglaundry.herokuapp.com/buildings/";
+
 	private PullToRefreshLayout mPullToRefreshLayout;
+
 	private int heightInDp;
 
 	@Override
@@ -56,10 +58,9 @@ public class List extends Activity implements OnRefreshListener {
 		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
 		ActionBarPullToRefresh.from(this).listener(this)
 				.allChildrenArePullable().setup(mPullToRefreshLayout);
+
 		initializeTextViews();
 
-		graphs[0].setGraphInvisible();
-		graphs[1].setGraphInvisible();
 		// load saved configurations
 		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
 		// if building pref is not there then set building to null
@@ -72,9 +73,14 @@ public class List extends Activity implements OnRefreshListener {
 			getActionBar().setSubtitle("Laundry Status");
 			getStatus(building);
 		}
+		
 		heightInDp = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
 						.getDisplayMetrics());
+
+		AdView adView = (AdView) findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().addTestDevice("76BEA164B057BB9C09EA516A71AEC324").build();
+		adView.loadAd(adRequest);
 	}
 
 	// save the setup
@@ -103,6 +109,7 @@ public class List extends Activity implements OnRefreshListener {
 
 	private void initializeTextViews() {
 		graphs = new Graph[2];
+
 		graphs[0] = new Graph(getApplicationContext());
 		graphs[1] = new Graph(getApplicationContext());
 		Typeface tf = Typeface.createFromAsset(getAssets(),
@@ -156,6 +163,8 @@ public class List extends Activity implements OnRefreshListener {
 
 		graphs[0].setClickListeners();
 		graphs[1].setClickListeners();
+		graphs[0].setGraphInvisible();
+		graphs[1].setGraphInvisible();
 
 		time = (TextView) findViewById(R.id.time);
 	}
@@ -338,10 +347,16 @@ public class List extends Activity implements OnRefreshListener {
 				if (selected != -1) {
 					building = buildings[selected].replace(" ", "_");
 					getStatus(building);
+
+					// Save the building to settings
 					SharedPreferences.Editor editor = getPreferences(
 							MODE_PRIVATE).edit();
 					editor.putString("building", building);
 					editor.commit();
+
+					getActionBar().setTitle(building);
+					getActionBar().setSubtitle("Laundry Status");
+
 					dialog.dismiss();
 				}
 			}
