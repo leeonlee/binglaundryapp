@@ -368,10 +368,11 @@ public class Laundry extends Activity implements OnRefreshListener {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case com.amv.binglaundrychecker2.R.id.action_change:
+		case R.id.action_change:
 			setCommunity();
 			break;
 		}
+		
 		return true;
 	}
 }
