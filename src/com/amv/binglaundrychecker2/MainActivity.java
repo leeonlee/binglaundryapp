@@ -10,13 +10,11 @@ import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.amv.binglaundrychecker2.NewViewFragment.OnViewChangeListener;
 
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -30,7 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends FragmentActivity implements OnRefreshListener {
+public class MainActivity extends FragmentActivity implements OnRefreshListener, OnViewChangeListener {
 	private ProgressDialog progDialog;
 	private ActionBar actionBar;
 	private String building;
@@ -78,7 +76,7 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener 
 		} else {
 			getActionBar().setTitle(building.replace("_", " "));
 			getActionBar().setSubtitle("Laundry Status");
-			getStatus(building);
+			//getStatus();
 		}
 	}
 
@@ -238,7 +236,7 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener 
 
 					getActionBar().setTitle(building);
 					getActionBar().setSubtitle("Laundry Status");
-					getStatus(building);
+					getStatus();
 				}
 			}
 		});
@@ -247,7 +245,7 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener 
 		progDialog.dismiss();
 	}
 
-	public void getStatus(String building) {
+	public void getStatus() {
 		mPullToRefreshLayout.setRefreshing(true);
 		new CallAPI().execute(statusURL + building, "status");
 	}
@@ -273,6 +271,11 @@ public class MainActivity extends FragmentActivity implements OnRefreshListener 
 
 	@Override
 	public void onRefreshStarted(View view) {
-		getStatus(building);
+		getStatus();
+	}
+
+	@Override
+	public void updateView() {
+		getStatus();
 	}
 }
