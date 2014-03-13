@@ -34,7 +34,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-public class List extends Activity implements OnRefreshListener {
+public class Laundry extends Activity implements OnRefreshListener {
 	private ProgressDialog progDialog;
 	private String building;
 	int selected;
@@ -55,6 +55,7 @@ public class List extends Activity implements OnRefreshListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.blding_list);
 
+		// set up pull to refresh
 		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
 		ActionBarPullToRefresh.from(this).listener(this)
 				.allChildrenArePullable().setup(mPullToRefreshLayout);
@@ -73,38 +74,21 @@ public class List extends Activity implements OnRefreshListener {
 			getActionBar().setSubtitle("Laundry Status");
 			getStatus(building);
 		}
-		
+
 		heightInDp = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
 						.getDisplayMetrics());
 
 		AdView adView = (AdView) findViewById(R.id.adView);
-		AdRequest adRequest = new AdRequest.Builder().addTestDevice("76BEA164B057BB9C09EA516A71AEC324").build();
+		AdRequest adRequest = new AdRequest.Builder().addTestDevice(
+				"76BEA164B057BB9C09EA516A71AEC324").build();
 		adView.loadAd(adRequest);
 	}
 
-	// save the setup
+	// Method that calls on pull to refresh
 	@Override
-	protected void onPause() {
-		super.onPause();
-		SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-		editor.putString("building", building);
-		editor.commit();
-	}
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case com.amv.binglaundrychecker2.R.id.action_change:
-			setCommunity();
-			break;
-		}
-		return true;
+	public void onRefreshStarted(View view) {
+		getStatus(building);
 	}
 
 	private void initializeTextViews() {
@@ -163,6 +147,7 @@ public class List extends Activity implements OnRefreshListener {
 
 		graphs[0].setClickListeners();
 		graphs[1].setClickListeners();
+
 		graphs[0].setGraphInvisible();
 		graphs[1].setGraphInvisible();
 
@@ -195,12 +180,6 @@ public class List extends Activity implements OnRefreshListener {
 			string = new String(contents, 0, bytesRead);
 		}
 		return string;
-	}
-
-	private void callProgDialog() {
-		progDialog = new ProgressDialog(List.this);
-		progDialog.setMessage("Loading..");
-		progDialog.show();
 	}
 
 	// The three types are used for- params, progress, result
@@ -366,8 +345,33 @@ public class List extends Activity implements OnRefreshListener {
 		progDialog.dismiss();
 	}
 
+	private void callProgDialog() {
+		progDialog = new ProgressDialog(Laundry.this);
+		progDialog.setMessage("Loading..");
+		progDialog.show();
+	}
+
+	// save the setup
 	@Override
-	public void onRefreshStarted(View view) {
-		getStatus(building);
+	protected void onPause() {
+		super.onPause();
+		SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+		editor.putString("building", building);
+		editor.commit();
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case com.amv.binglaundrychecker2.R.id.action_change:
+			setCommunity();
+			break;
+		}
+		return true;
 	}
 }

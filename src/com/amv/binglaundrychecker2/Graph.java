@@ -108,14 +108,16 @@ class Graph {
 	private String timesToString(JSONArray jsonArray) {
 		int length = jsonArray.length();
 		String returnString = "";
-		try {
-			returnString = jsonArray.getString(0) + " min";
-			for (int i = 1; i < length; i++) {
-				returnString += ", " + jsonArray.get(i) + " min";
+		if (length != 0) {
+			try {
+				returnString = jsonArray.getString(0) + " min";
+				for (int i = 1; i < length; i++) {
+					returnString += ", " + jsonArray.get(i) + " min";
 
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 
 		return returnString;
@@ -177,10 +179,6 @@ class Graph {
 
 	public void setLineVisible() {
 		line.setVisibility(View.VISIBLE);
-	}
-
-	public void setName(TextView a) {
-		name = a;
 	}
 
 	public void setGraphInvisible() {
