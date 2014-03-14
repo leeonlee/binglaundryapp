@@ -27,7 +27,7 @@ public class NewViewFragment extends ViewFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View myView = inflater.inflate(R.layout.blding_list, container, false);
+		View myView = inflater.inflate(R.layout.new_view_fragment, container, false);
 		initializeTextViews(myView);
 		return myView;
 	}
