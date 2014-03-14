@@ -1,6 +1,8 @@
 package com.amv.binglaundrychecker2;
 
-import org.json.JSONArray;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,15 +22,18 @@ public class OldViewGraph {
 			int total = object.getInt("washerTotal");
 			int inUse = object.getInt("washerInUse");
 			int complete = object.getInt("washerComplete");
-			JSONArray timeArray;
+			String times = object.getString("washerTimes");
+			Pattern pattern = Pattern.compile("^(\\d+ \\w+),");
 
 			String wash = avail + "/" + total + " washers available" + "\n"
 					+ complete + " washers completed" + "\n" + inUse
 					+ " washers in use";
 
 			if (inUse != 0) {
-				timeArray = object.getJSONArray("washerTimes");
-				wash += "\nEarliest: " + getEarliest(timeArray);
+				Matcher match = pattern.matcher(times);
+				if (match.find()) {
+					wash += "\nEarliest: " + match.group(1);
+				}
 			}
 
 			statusWash.setText(wash);
@@ -37,13 +42,17 @@ public class OldViewGraph {
 			total = object.getInt("dryerTotal");
 			inUse = object.getInt("dryerInUse");
 			complete = object.getInt("dryerComplete");
+			times = object.getString("dryerTimes");
+
 			String dry = avail + "/" + total + " dryers available" + "\n"
 					+ complete + " dryers completed" + "\n" + inUse
 					+ " dryers in use";
 
 			if (inUse != 0) {
-				timeArray = object.getJSONArray("dryerTimes");
-				dry += "\nEarliest: " + getEarliest(timeArray);
+				Matcher match = pattern.matcher(times);
+				if (match.find()) {
+					dry += "\nEarliest: " + match.group(1);
+				}
 			}
 
 			statusDry.setText(dry);
@@ -52,17 +61,5 @@ public class OldViewGraph {
 			e.printStackTrace();
 		}
 
-	}
-
-	private String getEarliest(JSONArray jsonArray) {
-		int length = jsonArray.length();
-		if (length != 0) {
-			try {
-				return jsonArray.getString(0) + " min";
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		return "";
 	}
 }

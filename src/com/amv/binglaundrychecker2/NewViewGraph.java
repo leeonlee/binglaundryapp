@@ -1,6 +1,5 @@
 package com.amv.binglaundrychecker2;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,18 +60,13 @@ class NewViewGraph {
 			int total = object.getInt("washerTotal");
 			int inUse = object.getInt("washerInUse");
 			int complete = object.getInt("washerComplete");
-			JSONArray timeArray;
+			washerTimes = object.getString("washerTimes");
 
 			if (total > 0) {
 				setWashersVisible();
 				washerAvail.setText(Integer.toString(avail));
 				washerInUse.setText(Integer.toString(inUse));
 				washerComplete.setText(Integer.toString(complete));
-
-				if (inUse != 0) {
-					timeArray = object.getJSONArray("washerTimes");
-					washerTimes = timesToString(timeArray);
-				}
 
 				changeWasherSizes(total, heightInDp, avail, inUse, complete);
 			} else {
@@ -83,17 +77,13 @@ class NewViewGraph {
 			total = object.getInt("dryerTotal");
 			inUse = object.getInt("dryerInUse");
 			complete = object.getInt("dryerComplete");
+			dryerTimes = object.getString("dryerTimes");
 
 			if (total > 0) {
 				setDryersVisible();
 				dryerAvail.setText(Integer.toString(avail));
 				dryerInUse.setText(Integer.toString(inUse));
 				dryerComplete.setText(Integer.toString(complete));
-
-				if (inUse != 0) {
-					timeArray = object.getJSONArray("dryerTimes");
-					dryerTimes = timesToString(timeArray);
-				}
 
 				changeDryerSizes(total, heightInDp, avail, inUse, complete);
 			} else {
@@ -103,24 +93,6 @@ class NewViewGraph {
 			e.printStackTrace();
 		}
 
-	}
-
-	private String timesToString(JSONArray jsonArray) {
-		int length = jsonArray.length();
-		String returnString = "";
-		if (length != 0) {
-			try {
-				returnString = jsonArray.getString(0) + " min";
-				for (int i = 1; i < length; i++) {
-					returnString += ", " + jsonArray.get(i) + " min";
-
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return returnString;
 	}
 
 	public void setClickListeners() {
