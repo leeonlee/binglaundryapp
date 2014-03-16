@@ -48,6 +48,9 @@ public class OldViewFragment extends ViewFragment {
 		if (json == null) {
 			return;
 		}
+		if (json.length() == 1){
+			graphs[1].setInvisible();
+		}
 		for (int i = 0; i < json.length(); i++) {
 			JSONObject object;
 			try {

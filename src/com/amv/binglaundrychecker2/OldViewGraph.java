@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.view.View;
 import android.widget.TextView;
 
 public class OldViewGraph {
@@ -13,6 +14,18 @@ public class OldViewGraph {
 
 	public OldViewGraph() {
 
+	}
+
+	public void setVisible() {
+		statusWash.setVisibility(View.VISIBLE);
+		statusDry.setVisibility(View.VISIBLE);
+		name.setVisibility(View.VISIBLE);
+	}
+
+	public void setInvisible() {
+		statusWash.setVisibility(View.GONE);
+		statusDry.setVisibility(View.GONE);
+		name.setVisibility(View.GONE);
 	}
 
 	public void setValues(JSONObject object) {
@@ -25,18 +38,23 @@ public class OldViewGraph {
 			String times = object.getString("washerTimes");
 			Pattern pattern = Pattern.compile("^(\\d+ \\w+),");
 
-			String wash = avail + "/" + total + " washers available" + "\n"
-					+ complete + " washers completed" + "\n" + inUse
-					+ " washers in use";
+			if (total == 0)
+				setInvisible();
+			else {
+				setVisible();
+				String wash = avail + "/" + total + " washers available" + "\n"
+						+ complete + " washers completed" + "\n" + inUse
+						+ " washers in use";
 
-			if (inUse != 0) {
-				Matcher match = pattern.matcher(times);
-				if (match.find()) {
-					wash += "\nEarliest: " + match.group(1);
+				if (inUse != 0) {
+					Matcher match = pattern.matcher(times);
+					if (match.find()) {
+						wash += "\nEarliest: " + match.group(1);
+					}
 				}
-			}
 
-			statusWash.setText(wash);
+				statusWash.setText(wash);
+			}
 
 			avail = object.getInt("dryerAvail");
 			total = object.getInt("dryerTotal");
@@ -44,18 +62,23 @@ public class OldViewGraph {
 			complete = object.getInt("dryerComplete");
 			times = object.getString("dryerTimes");
 
-			String dry = avail + "/" + total + " dryers available" + "\n"
-					+ complete + " dryers completed" + "\n" + inUse
-					+ " dryers in use";
+			if (total == 0) {
+				setInvisible();
+			} else {
+				setVisible();
+				String dry = avail + "/" + total + " dryers available" + "\n"
+						+ complete + " dryers completed" + "\n" + inUse
+						+ " dryers in use";
 
-			if (inUse != 0) {
-				Matcher match = pattern.matcher(times);
-				if (match.find()) {
-					dry += "\nEarliest: " + match.group(1);
+				if (inUse != 0) {
+					Matcher match = pattern.matcher(times);
+					if (match.find()) {
+						dry += "\nEarliest: " + match.group(1);
+					}
 				}
-			}
 
-			statusDry.setText(dry);
+				statusDry.setText(dry);
+			}
 
 		} catch (JSONException e) {
 			e.printStackTrace();

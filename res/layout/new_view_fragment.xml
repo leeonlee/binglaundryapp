@@ -354,13 +354,6 @@
                 android:layout_marginRight="5sp"
                 android:text="@string/dryer" />
         </LinearLayout>
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/admob_id" />
     </LinearLayout>
 
 </RelativeLayout>

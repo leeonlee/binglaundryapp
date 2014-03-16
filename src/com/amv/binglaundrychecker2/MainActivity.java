@@ -54,7 +54,7 @@ public class MainActivity extends FragmentActivity implements
 		building = prefs.getString("building", null);
 		if (building == null) {
 			getActionBar().setTitle("Laundry Status");
-
+			setCommunity();
 		} else {
 			getActionBar().setTitle(building.replace("_", " "));
 			getActionBar().setSubtitle("Laundry Status");
@@ -103,12 +103,13 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	public void getStatus() {
-		if (building != null || building != "") {
+		if (building != null && building != "") {
 			// remove all spaces
 			String temp = building.replace(" ", "_");
 			mPullToRefreshLayout.setRefreshing(true);
 			new CallAPI().execute(statusURL + temp, "status");
 		}
+		
 	}
 
 	// The three types are used for- params, progress, result

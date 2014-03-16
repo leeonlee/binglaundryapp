@@ -13,9 +13,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-
 public class NewViewFragment extends ViewFragment {
 	int selected;
 	private TextView time;
@@ -38,11 +35,6 @@ public class NewViewFragment extends ViewFragment {
 		heightInDp = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
 						.getDisplayMetrics());
-
-		AdView adView = (AdView) getView().findViewById(R.id.adView);
-		AdRequest adRequest = new AdRequest.Builder().addTestDevice(
-				"76BEA164B057BB9C09EA516A71AEC324").build();
-		adView.loadAd(adRequest);
 	}
 
 	private void initializeTextViews(View view) {
